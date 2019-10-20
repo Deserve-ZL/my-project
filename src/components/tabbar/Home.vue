@@ -18,21 +18,26 @@
 
     <!-- Tab 标签页 -->
     <van-tabs v-model="active" sticky>
-      <van-tab title="标签 1">内容 1</van-tab>
-      <van-tab title="标签 2">内容 2</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
+      <!-- Card 卡片 物品列表-->
+      <van-tab title="衣服">
+        <subgoodslist @click.native="goDetail(1)"></subgoodslist>
+      </van-tab>
+      <van-tab title="标签 2">
+        <subgoodslist @click.native="goDetail(2)"></subgoodslist>
+      </van-tab>
+      <van-tab title="标签 3">
+        <subgoodslist @click.native="goDetail(3)"></subgoodslist>
+      </van-tab>
       <van-tab title="标签 4">
-        <img src="@/assets/logo.png" />
-        <img src="@/assets/logo.png" />
-        <img src="@/assets/logo.png" />
-        <img src="@/assets/logo.png" />
-        <img src="@/assets/logo.png" />
+        <subgoodslist @click.native="goDetail(4)"></subgoodslist>
       </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
+import subgoodslist from "@/components/subcomponents/subGoodsList";
+
 export default {
   data() {
     return {
@@ -42,12 +47,24 @@ export default {
         "https://img.yzcdn.cn/vant/apple-2.jpg"
       ]
     };
+  },
+  methods: {
+    //商品详情页跳转-使用编程式路由跳转
+    goDetail(id) {
+      this.$router.push({ name: "goodsInfo", params: { id } });
+      // console.log("11");
+    }
+  },
+
+  //注册子组件，物品列表
+  components: {
+    subgoodslist
   }
 };
 </script>
 <style scoped>
 .swipe img {
   width: 100%;
-  height: 200px;
+  height: 180px;
 }
 </style>
