@@ -19,14 +19,14 @@
 <script>
 export default {};
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .card-bottom {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-}
-.card-bottom span {
-  margin-left: 0.5rem;
+  span {
+    margin-left: 0.5rem;
+  }
 }
 </style>

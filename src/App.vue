@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <!-- 导航栏 -->
-    <van-nav-bar title="标题" left-text="返回" left-arrow>
+    <van-nav-bar title="二手市场" left-text="返回" left-arrow fixed>
       <!-- <van-icon name="search" slot="right" /> -->
     </van-nav-bar>
 
     <!-- 中间的 路由 router-view 区域 -->
     <transition>
-      <router-view></router-view>
+      <router-view class="app-center"></router-view>
     </transition>
     <!-- 底部标签栏 -->
     <van-tabbar route>
@@ -30,5 +30,29 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style lang="scss" scoped>
+#app{
+  margin-top: 47px;
+   overflow-x: hidden;
+}
+// 添加页面切换动画
+.v-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+  position: absolute;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
+
+</style>>
+
+

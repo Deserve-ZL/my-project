@@ -62,9 +62,12 @@ export default {
   }
 };
 </script>
-<style scoped>
-.swipe img {
-  width: 100%;
-  height: 180px;
+<style lang="scss" scoped>
+.swipe {
+  img {
+    width: 100%;
+    height: 180px;
+  }
 }
 </style>
+
