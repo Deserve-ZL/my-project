@@ -17,25 +17,29 @@
     </van-swipe>
 
     <!-- Tab 标签页 -->
-    <van-tabs v-model="active" sticky>
+    <van-tabs v-model="active" sticky animated swipeable>
       <!-- Card 卡片 物品列表-->
-      <van-tab title="衣服">
-        <subgoodslist @click.native="goDetail(1)"></subgoodslist>
+      <van-tab title="全部">
+        <subgoodslist :sort_id="1"></subgoodslist>
       </van-tab>
-      <van-tab title="标签 2">
-        <subgoodslist @click.native="goDetail(2)"></subgoodslist>
+      <van-tab title="服装">
+        <subgoodslist :sort_id="2"></subgoodslist>
       </van-tab>
-      <van-tab title="标签 3">
-        <subgoodslist @click.native="goDetail(3)"></subgoodslist>
+      <van-tab title="数码">
+        <subgoodslist :sort_id="3"></subgoodslist>
       </van-tab>
-      <van-tab title="标签 4">
-        <subgoodslist @click.native="goDetail(4)"></subgoodslist>
+      <van-tab title="运动">
+        <subgoodslist :sort_id="4"></subgoodslist>
+      </van-tab>
+      <van-tab title="图书">
+        <subgoodslist :sort_id="5"></subgoodslist>
       </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
+// 物品列表
 import subgoodslist from "@/components/subcomponents/subGoodsList";
 
 export default {
@@ -55,7 +59,6 @@ export default {
       // console.log("11");
     }
   },
-
   //注册子组件，物品列表
   components: {
     subgoodslist
