@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import demo from '@/components/tabbar/demo'
 // tabbar导航
 import Home from '@/components/tabbar/Home'
 import Publish from '@/components/tabbar/Publish'
@@ -18,8 +19,9 @@ export default new Router({
     { path: '/home', name: 'Home', component: Home },
     { path: '/publish', name: 'Publish', component: Publish },
     { path: '/chat', name: 'Chat', component: Chat },
-    { path: '/mineinfo', name: 'MineInfo', component: MineInfo },
+    { path: '/mineinfo', name: 'MineInfo', component: demo },
     
+
     { path: '/home/goodsinfo/:id', name: 'goodsInfo', component: goodsInfo },
   ]
 })

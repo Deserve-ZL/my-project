@@ -67,17 +67,23 @@ export default {
   methods: {
     good() {
       this.goodColor = !this.goodColor;
-      this.$toast({
-        message: "点个赞",
-        icon: "good-job-o"
-      });
+      if (this.goodColor === true) {
+        this.$toast({
+          message: "点个赞",
+          icon: "good-job-o",
+          duration: 1500
+        });
+      }
     },
     star() {
       this.starColor = !this.starColor;
-      this.$toast({
-        message: "值得珍藏",
-        icon: "star-o"
-      });
+      if (this.starColor === true) {
+        this.$toast({
+          message: "值得珍藏",
+          icon: "star-o",
+          duration: 1500
+        });
+      }
     }
   }
 };

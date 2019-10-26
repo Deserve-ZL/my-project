@@ -7,7 +7,7 @@
       :price="item.new_price"
       :thumb="item.img_url"
       :tag="item.tag"
-      v-for="item in goodsList"
+      v-for="item in list"
       :key="item.id"
       @click.native="goDetail(item.id)"
     >
@@ -57,7 +57,7 @@ export default {
     };
   },
   mounted(){
-    this.getGoodsList();
+    // this.getGoodsList();
   },
   methods: {
     getGoodsList() {
