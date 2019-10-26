@@ -2,7 +2,6 @@
   <div id="app">
     <!-- 导航栏 -->
     <van-nav-bar title="二手市场" left-text="返回" left-arrow fixed>
-      <!-- <van-icon name="search" slot="right" /> -->
     </van-nav-bar>
 
     <!-- 中间的 路由 router-view 区域 -->
@@ -31,9 +30,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#app{
+#app {
   margin-top: 47px;
-   overflow-x: hidden;
+  // overflow-x: hidden;
 }
 // 添加页面切换动画
 .v-enter {
@@ -51,8 +50,6 @@ export default {
 .v-leave-active {
   transition: all 0.5s ease;
 }
-
-
 </style>>
 
 

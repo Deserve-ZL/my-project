@@ -7,7 +7,7 @@
       :price="item.new_price"
       :thumb="item.img_url"
       :tag="item.tag"
-      v-for="item in list"
+      v-for="item in goodsList"
       :key="item.id"
       @click.native="goDetail(item.id)"
     >
@@ -23,6 +23,7 @@
 export default {
   data() {
     return {
+      goodsList: [],
       list: [
         {
           id: 87,
@@ -55,7 +56,28 @@ export default {
       ] //物品列表数据数组
     };
   },
+  mounted(){
+    this.getGoodsList();
+  },
   methods: {
+    getGoodsList() {
+      // goodsList
+      let that   = this;
+      that.$axios
+        .get("/goods/list")
+        .then(function(response) {
+          let res = response.data;
+          if (res.status == "0") {
+            console.log("goodsList_succss");
+            that.goodsList = res.result.list;
+          }else{
+            console.log("goodsList_error");
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     //商品详情页跳转-使用编程式路由跳转
     goDetail(id) {
       this.$router.push({ name: "goodsInfo", params: { id } });
