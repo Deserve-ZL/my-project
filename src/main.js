@@ -10,9 +10,9 @@ Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 
-import { Tabbar, TabbarItem, NavBar, Tab, Tabs, Swipe, SwipeItem, Lazyload, NoticeBar, Button, Uploader, Field, Divider, Cell,CellGroup, Toast, List, Card, Image, Tag, Grid, GridItem, Icon,Popup,NumberKeyboard   } from 'vant';
+import { Tabbar, TabbarItem, NavBar, Tab, Tabs, Swipe, SwipeItem, Lazyload, NoticeBar, Button, Uploader, Field, Divider, Cell,CellGroup, Toast, List, Card, Image, Tag, Grid, GridItem, Icon,Popup,NumberKeyboard ,Picker,Notify} from 'vant';
 
-Vue.use(Tabbar).use(TabbarItem).use(NavBar).use(Tab).use(Tabs).use(Swipe).use(SwipeItem).use(Lazyload).use(NoticeBar).use(Button).use(Uploader).use(Field).use(Divider).use(Cell).use(CellGroup).use(Toast).use(List).use(Card).use(Image).use(Tag).use(Grid).use(GridItem).use(Icon).use(Popup).use(NumberKeyboard);
+Vue.use(Tabbar).use(TabbarItem).use(NavBar).use(Tab).use(Tabs).use(Swipe).use(SwipeItem).use(Lazyload).use(NoticeBar).use(Button).use(Uploader).use(Field).use(Divider).use(Cell).use(CellGroup).use(Toast).use(List).use(Card).use(Image).use(Tag).use(Grid).use(GridItem).use(Icon).use(Popup).use(NumberKeyboard).use(Picker).use(Notify);
 
 
 /* eslint-disable no-new */

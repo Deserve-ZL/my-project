@@ -7,7 +7,7 @@
       :price="item.new_price"
       :thumb="item.img_url"
       :tag="item.tag"
-      v-for="item in list"
+      v-for="item in goodsList"
       :key="item.id"
       @click.native="goDetail(item.id)"
     >
@@ -56,21 +56,22 @@ export default {
       ] //物品列表数据数组
     };
   },
-  mounted(){
-    // this.getGoodsList();
+  mounted() {
+    this.getGoodsList();
   },
   methods: {
     getGoodsList() {
+      console.log(this.sort_id);
       // goodsList
-      let that   = this;
+      let that = this;
       that.$axios
-        .get("/goods/list")
+        .get("/goods/list/" + that.sort_id)
         .then(function(response) {
           let res = response.data;
           if (res.status == "0") {
             console.log("goodsList_succss");
             that.goodsList = res.result.list;
-          }else{
+          } else {
             console.log("goodsList_error");
           }
         })
