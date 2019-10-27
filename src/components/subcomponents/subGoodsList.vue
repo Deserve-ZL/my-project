@@ -9,7 +9,7 @@
       :tag="item.tag"
       v-for="item in goodsList"
       :key="item.id"
-      @click.native="goDetail(item.id)"
+      @click.native="goDetail(item.goodId)"
     >
       <div slot="tags"></div>
       <div class="card-bottom" slot="bottom">
@@ -82,7 +82,6 @@ export default {
     //商品详情页跳转-使用编程式路由跳转
     goDetail(id) {
       this.$router.push({ name: "goodsInfo", params: { id } });
-      console.log(this.sort_id);
     }
   },
   props: ["sort_id"]

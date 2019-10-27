@@ -54,9 +54,9 @@ export default {
   },
   methods: {
     //商品详情页跳转-使用编程式路由跳转
-    goDetail(id) {
-      this.$router.push({ name: "goodsInfo", params: { id } });
-    }
+    // goDetail(id) {
+    //   this.$router.push({ name: "goodsInfo", params: { id } });
+    // }
   },
   //注册子组件，物品列表
   components: {

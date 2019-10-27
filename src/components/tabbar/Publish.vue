@@ -27,21 +27,22 @@
     <van-divider />
     <!-- 分类 价格 Cell 单元格 -->
     <van-cell-group>
-      <van-cell title="分类" :value="sort" icon="coupon-o" is-link center @click="getSort" />
+      <van-cell title="分类" :value="sort" icon="coupon-o" is-link center @click="sortShow" />
       <van-cell title="价格" :value="price" icon="gold-coin-o" is-link center @click="getPrice" />
     </van-cell-group>
     <van-divider />
+
     <!-- Button 发布按钮 -->
-    <van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" @click="pubish">发布</van-button>
-    
+    <van-button
+      round
+      size="large"
+      color="linear-gradient(to right, #4bb0ff, #6149f6)"
+      @click="pubish"
+    >发布</van-button>
+
     <!-- 分类选择弹出层 -->
     <van-popup v-model="picker_show" position="bottom">
-      <van-picker
-        show-toolbar
-        :columns="columns"
-        @cancel="picker_show = false"
-        @confirm="onConfirm"
-      />
+      <van-picker show-toolbar :columns="columns" @cancel="picker_show = false" @confirm="getSort" />
     </van-popup>
     <!-- 价格键盘输入弹出层 -->
     <van-popup v-model="price_show" position="bottom" round :style="{ height: '52%' }">
@@ -49,33 +50,35 @@
         label="价格"
         placeholder="出售价格"
         :value="new_price"
-        @click="NumKey2=true,NumKey1=false"
+        @click="NumKey1=true,NumKey2=false"
         @blur="price=new_price"
+        @input="price=new_price"
       />
       <van-field
         label="定价"
         placeholder="入手价格"
         :value="old_price"
-        @click="NumKey1=true,NumKey2=false"
+        @click="NumKey2=true,NumKey1=false"
       />
+      <van-checkbox class="tagCheckbox" v-model="tagChecked" shape="square">全新</van-checkbox>
       <van-number-keyboard
-        v-model="old_price"
+        v-model="new_price"
         :show="NumKey1"
-        :maxlength="6"
+        :maxlength="8"
         theme="custom"
         extra-key="."
         close-button-text="完成"
-        @close="price_show =NumKey1= false"
+        @close="price_show =NumKey1= false,price=new_price"
         :transition="false"
       />
       <van-number-keyboard
-        v-model="new_price"
+        v-model="old_price"
         :show="NumKey2"
-        :maxlength="6"
+        :maxlength="8"
         theme="custom"
         extra-key="."
         close-button-text="完成"
-        @close="price_show =NumKey2= false"
+        @close="price_show =NumKey2= false,price=new_price"
         :transition="false"
       />
     </van-popup>
@@ -91,7 +94,7 @@ export default {
       title: "",
       content: "",
 
-      sort:"分个类",
+      sort: "分个类",
       picker_show: false,
       columns: ["服装", "数码", "运动", "图书"],
 
@@ -100,15 +103,16 @@ export default {
       NumKey2: false,
       new_price: "",
       old_price: "",
-      price: "开个价"
+      price: "开个价",
+      tagChecked: false
     };
   },
   created() {},
   methods: {
-    getSort() {
+    sortShow() {
       this.picker_show = true;
     },
-    onConfirm(value) {
+    getSort(value) {
       this.sort = value;
       this.picker_show = false;
     },
@@ -117,9 +121,40 @@ export default {
       this.NumKey1 = true;
       console.log(this.price);
     },
-    pubish(){
-      this.$notify({ type: 'success', message: '发布成功' });
-      this.title=this.content="";
+    pubish() {
+      if (
+        this.title != "" &&
+        this.content != "" &&
+        this.sort != "分个类" &&
+        this.new_price != "" &&
+        this.old_price != ""
+      ) {
+        let that = this;
+        that.$axios
+          .post("/goods/add", {
+            goodId: Math.floor(Math.random() * 100 + 1).toString(),
+            goodSort: that.sort,
+            title: that.title,
+            content: that.content,
+            new_price: that.new_price,
+            old_price: that.old_price,
+            img_url: "https://img.yzcdn.cn/vant/leaf.jpg",
+            seller_name: "123",
+            tag: that.tagChecked ? "全新" : ""
+          })
+          .then(function(res) {
+            console.log(res); //处理成功的函数 相当于success
+          })
+          .catch(function(error) {
+            console.log(error); //错误处理 相当于error
+          });
+
+        this.$notify({ type: "success", message: "发布成功" });
+        this.title = this.content= "";
+        this.tagChecked = false;
+      } else {
+        this.$notify({ type: "warning", message: "请完善物品信息！" });
+      }
     }
   },
   //注册子组件，文经上传
@@ -128,3 +163,10 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.tagCheckbox {
+  margin: 0.7rem;
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

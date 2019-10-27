@@ -61,10 +61,16 @@ export default {
   data() {
     return {
       goodColor: false,
-      starColor: false
+      starColor: false,
+      goodInfo: [],
+      id: this.$route.params.id //从路由参数对象中获取物品的 goodsid 
     };
   },
+  mounted() {
+    // this.getGoodInfo();
+  },
   methods: {
+    // 点赞
     good() {
       this.goodColor = !this.goodColor;
       if (this.goodColor === true) {
@@ -75,6 +81,7 @@ export default {
         });
       }
     },
+    // 收藏
     star() {
       this.starColor = !this.starColor;
       if (this.starColor === true) {
@@ -84,6 +91,24 @@ export default {
           duration: 1500
         });
       }
+    },
+    // 根据物品goodId请求物品数据
+    getGoodInfo() {
+      let that = this;
+      that.$axios
+        .get("/goods/goodinfo/" + that.id)
+        .then(function(response) {
+          let res = response.data;
+          if (res.status == "0") {
+            console.log("goodinfo_succss");
+            that.goodInfo = res.result.list;
+          } else {
+            console.log("goodinfo_error");
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };
