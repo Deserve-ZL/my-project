@@ -60,7 +60,9 @@
         :value="old_price"
         @click="NumKey2=true,NumKey1=false"
       />
+      <!-- 是否全新复选框 -->
       <van-checkbox class="tagCheckbox" v-model="tagChecked" shape="square">全新</van-checkbox>
+      <!-- 数字键盘 -->
       <van-number-keyboard
         v-model="new_price"
         :show="NumKey1"
@@ -121,6 +123,7 @@ export default {
       this.NumKey1 = true;
       console.log(this.price);
     },
+    // 发布点击事件
     pubish() {
       if (
         this.title != "" &&
@@ -143,14 +146,14 @@ export default {
             tag: that.tagChecked ? "全新" : ""
           })
           .then(function(res) {
-            console.log(res); //处理成功的函数 相当于success
+            console.log(res);
           })
           .catch(function(error) {
-            console.log(error); //错误处理 相当于error
+            console.log(error);
           });
 
         this.$notify({ type: "success", message: "发布成功" });
-        this.title = this.content= "";
+        this.title = this.content = "";
         this.tagChecked = false;
       } else {
         this.$notify({ type: "warning", message: "请完善物品信息！" });

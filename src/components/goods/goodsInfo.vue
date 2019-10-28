@@ -3,7 +3,7 @@
     <div class="goods-info">
       <!-- 头部卖家名字部分 -->
       <div class="seller-name">
-        <van-image fit="fill" width="2rem" height="2rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <van-image fit="fill" width="2.6rem" height="2.6rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
         <span class="name">不知道叫什么名字好</span>
         <van-tag mark type="primary">信用极好</van-tag>
       </div>
@@ -11,12 +11,13 @@
       <!-- 物品价格 -->
       <div class="price">
         <span style="color: red;font-weight: bold;
-      font-size: 20px;">￥100</span>
-        <span class="old">￥1000</span>
+      font-size: 20px;">￥{{goodInfo.new_price}}</span>
+        <span class="old">￥{{goodInfo.old_price}}</span>
       </div>
-
+      <!-- 物品标题 -->
+      <div class="title">{{goodInfo.title}}</div>
       <!-- 物品内容 -->
-      <div class="info">的味道我单位打的味道我的味道我单位打完的我单位大无畏的打完我我的味道我单位打完完大雾</div>
+      <div class="info">{{goodInfo.content}}</div>
       <!-- 物品图片区域 -->
       <div class="goods-img">
         <van-image
@@ -63,11 +64,11 @@ export default {
       goodColor: false,
       starColor: false,
       goodInfo: [],
-      id: this.$route.params.id //从路由参数对象中获取物品的 goodsid 
+      id: this.$route.params.id //从路由参数对象中获取物品的 goodsid
     };
   },
   mounted() {
-    // this.getGoodInfo();
+    this.getGoodInfo();
   },
   methods: {
     // 点赞
@@ -96,7 +97,7 @@ export default {
     getGoodInfo() {
       let that = this;
       that.$axios
-        .get("/goods/goodinfo/" + that.id)
+        .get("/goods/goodinfo?id=" + that.id)
         .then(function(response) {
           let res = response.data;
           if (res.status == "0") {
@@ -126,7 +127,7 @@ export default {
       margin-left: 15px;
       /* 加粗 */
       font-weight: bold;
-      font-size: 0.9rem;
+      font-size: 1rem;
       margin-right: 10px;
     }
   }
@@ -137,11 +138,16 @@ export default {
       margin-left: 5px;
     }
   }
+  .title {
+    margin: 5px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+  }
   .info {
     margin: 5px;
     margin-top: 20px;
   }
-  .goods-img {
-  }
+  // .goods-img {
+  // }
 }
 </style>
