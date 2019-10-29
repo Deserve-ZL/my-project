@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <!-- 导航栏 -->
-    <van-nav-bar title="二手市场" left-text="返回" left-arrow fixed></van-nav-bar>
+    <van-nav-bar :title="nav_title" left-text="返回" @click-left="goBack" left-arrow fixed>
+      <div class="search" slot="right">
+        <van-field v-model="search_value" v-show="in_show" placeholder="搜索" />
+        <van-icon class="search_icon" name="search" size="1.7em" @click="search" />
+      </div>
+    </van-nav-bar>
 
     <!-- 中间的 路由 router-view 区域 -->
     <transition>
@@ -22,9 +27,26 @@ export default {
   data() {
     return {
       // v-model默认绑定选中标签的索引值，通过修改v-model即可切换选中的标签
-      active: 0
+      active: 0,
+      search_value: "",
+      in_show: false,
+      icon_show: true,
+      nav_title: "二手市场"
     };
-  }
+  },
+  methods: {
+    // 返回
+    goBack() {
+      this.$router.go(-1);
+    },
+    // 搜索
+    search() {
+      this.in_show = !this.in_show;
+      // this.in_show=!this.in_show;
+      this.nav_title = "";
+    }
+  },
+  components: {}
 };
 </script>
 
@@ -32,6 +54,12 @@ export default {
 #app {
   margin-top: 47px;
   // overflow-x: hidden;
+  .search {
+    display: flex;
+    align-items: center;
+    .search_icon {
+    }
+  }
 }
 // 添加页面切换动画
 .v-enter {

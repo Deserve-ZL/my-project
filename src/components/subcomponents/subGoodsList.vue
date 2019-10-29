@@ -57,22 +57,47 @@ export default {
     };
   },
   mounted() {
-    this.getGoodsList();
+    if (this.goods_id === undefined) {
+      this.goodsList = [];
+      this.getGoodsList(this.sort_id);
+    } else {
+      this.getGoodOneInfo(this.goods_id);
+    }
   },
   methods: {
-    getGoodsList() {
+    getGoodsList(id) {
       console.log(this.sort_id);
       // goodsList
       let that = this;
       that.$axios
-        .get("/goods/list/" + that.sort_id)
+        .get("/goods/list/" + id)
         .then(function(response) {
           let res = response.data;
           if (res.status == "0") {
             console.log("goodsList_succss");
             that.goodsList = res.result.list;
+            console.log(that.goodsList);
           } else {
             console.log("goodsList_error");
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    getGoodOneInfo(id) {
+      let that = this;
+      that.$axios
+        .get("/goods/goodinfo?id=" + id)
+        .then(function(response) {
+          let res = response.data;
+          if (res.status == "0") {
+            console.log("succss");
+            that.goodsList = [];
+            that.goodsList = res.result;
+            console.log(that.goodsList);
+          } else {
+            console.log("error");
           }
         })
         .catch(function(error) {
@@ -84,7 +109,7 @@ export default {
       this.$router.push({ name: "goodsInfo", params: { id } });
     }
   },
-  props: ["sort_id"]
+  props: ["sort_id", "goods_id"]
 };
 </script>
 <style lang="scss" scoped>

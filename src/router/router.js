@@ -10,6 +10,8 @@ import MineInfo from '@/components/tabbar/MineInfo'
 // 物品详情页
 import goodsInfo from '@/components/goods/goodsInfo'
 
+import goodsBuy from '@/components/goods/goodsBuy'
+
 
 Vue.use(Router)
 
@@ -23,5 +25,6 @@ export default new Router({
     
 
     { path: '/home/goodsinfo/:id', name: 'goodsInfo', component: goodsInfo },
+    { path: '/home/goodsBuy/:id', name: 'goodsBuy', component: goodsBuy },
   ]
 })

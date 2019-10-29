@@ -3,7 +3,12 @@
     <div class="goods-info">
       <!-- 头部卖家名字部分 -->
       <div class="seller-name">
-        <van-image fit="fill" width="2.6rem" height="2.6rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <van-image
+          fit="fill"
+          width="2.6rem"
+          height="2.6rem"
+          src="https://img.yzcdn.cn/vant/cat.jpeg"
+        />
         <span class="name">不知道叫什么名字好</span>
         <van-tag mark type="primary">信用极好</van-tag>
       </div>
@@ -51,7 +56,7 @@
             :style="{'color':starColor? 'red':''}"
           />
           <van-grid-item icon="comment-o" text="留言" />
-          <van-grid-item icon="cart" text="购买" to="/" style="color: red;" />
+          <van-grid-item icon="cart" text="购买" @click="toBuy" style="color: red;" />
         </van-grid>
       </div>
     </div>
@@ -110,6 +115,11 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    // 跳转购买页
+    toBuy() {
+      let id = this.id;
+      this.$router.push({ name: "goodsBuy", params: { id } });
     }
   }
 };
