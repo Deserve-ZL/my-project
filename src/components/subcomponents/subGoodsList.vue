@@ -58,9 +58,12 @@ export default {
   },
   mounted() {
     if (this.goods_id === undefined) {
+      // Home主页物品分类列表父组件调用
       this.goodsList = [];
       this.getGoodsList(this.sort_id);
     } else {
+      // goodsBuy物品购买页，选择物品信息显示父组件调用
+      this.goodsList = [];
       this.getGoodOneInfo(this.goods_id);
     }
   },

@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       active: 0,
+      // 轮播图片
       images: [
         "https://img.yzcdn.cn/vant/apple-1.jpg",
         "https://img.yzcdn.cn/vant/apple-2.jpg"

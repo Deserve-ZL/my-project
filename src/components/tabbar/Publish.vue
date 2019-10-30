@@ -88,28 +88,30 @@
 </template>
 
 <script>
+// 文件上传
 import uploader from "@/components/subcomponents/Uploader";
 
 export default {
   data() {
     return {
+      // 输入框
       title: "",
       content: "",
-
+      // 类别
       sort: "分个类",
       picker_show: false,
       columns: ["服装", "数码", "运动", "图书"],
-
+      // 价格
       price_show: false,
       NumKey1: false,
       NumKey2: false,
       new_price: "",
       old_price: "",
       price: "开个价",
+      // 是否全新
       tagChecked: false
     };
   },
-  created() {},
   methods: {
     sortShow() {
       this.picker_show = true;
@@ -123,7 +125,7 @@ export default {
       this.NumKey1 = true;
       console.log(this.price);
     },
-    // 发布点击事件
+    // 发布点击事件,添加物品请求
     pubish() {
       if (
         this.title != "" &&

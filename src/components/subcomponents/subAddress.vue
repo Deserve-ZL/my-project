@@ -2,11 +2,11 @@
   <div>
     <van-address-list
       v-model="chosenAddressId"
-      :list="list"
-      :disabled-list="disabledList"
-      disabled-text="以下地址超出配送范围"
+      :list="address_list"
+      :add-button-text="add_button_text"
       @add="onAdd"
       @edit="onEdit"
+      @select="sel_address"
     />
   </div>
 </template>
@@ -15,8 +15,11 @@
 export default {
   data() {
     return {
-      chosenAddressId: "1",
-      list: [
+      // 默认地址选择
+      chosenAddressId: "0",
+      add_button_text: " ",
+      // 地址；列表
+      address_list: [
         {
           id: "1",
           name: "张三",
@@ -30,25 +33,41 @@ export default {
           address: "浙江省杭州市拱墅区莫干山路 50 号"
         }
       ],
-      disabledList: [
-        {
-          id: "3",
-          name: "王五",
-          tel: "1320000000",
-          address: "浙江省杭州市滨江区江南大道 15 号"
-        }
-      ]
+      // 选择的地址数据
+      sel_address_data: {}
     };
   },
+  mounted() {
+    this.changeButtonText();
+  },
   methods: {
-    onAdd() {
-      Toast("新增地址");
+    // 改变add按钮文字
+    changeButtonText() {
+      if (this.user_id == undefined) {
+        this.add_button_text = "确定";
+      } else {
+        this.add_button_text = "添加地址";
+      }
     },
-
+    // 监听地址选择，获取选择的地址对象数据
+    sel_address(item, index) {
+      this.sel_address_data = item;
+    },
+    onAdd() {
+      if (this.user_id == undefined) {
+        // 向父组件传值
+        this.$emit("son_getAddress", this.sel_address_data);
+      } else {
+        // 地址管理页，添加地址
+        console.log(this.user_id);
+      }
+    },
+    // 编辑地址点击事件
     onEdit(item, index) {
-      Toast("编辑地址:" + index);
+      console.log("编辑地址:" + index);
     }
-  }
+  },
+  props: ["user_id"]
 };
 </script>
 
