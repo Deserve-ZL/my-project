@@ -2,9 +2,7 @@
   <div>
     <van-address-edit
       :area-list="areaList"
-      show-postal
       show-delete
-      show-set-default
       show-search-result
       :search-result="searchResult"
       @save="onSave"
@@ -17,6 +15,7 @@
 export default {
   data() {
     return {
+      // 地区列表
       areaList: {
         province_list: {
           350000: "福建省"
@@ -120,22 +119,36 @@ export default {
           350982: "福鼎市"
         }
       },
+      // 详细地址搜索数据
       searchResult: []
     };
   },
   methods: {
-    onSave() {
-      Toast("save");
+    // 保存地址
+    onSave(content) {
+      // 向父组件-subAddress公共地址列表传递添加的地址信息
+      console.log(content);
+      this.$emit("son_getAddressEdit", content);
     },
+    // 删除地址
     onDelete() {
       Toast("delete");
     },
+    // 修改详细地址
     onChangeDetail(val) {
       if (val) {
         this.searchResult = [
           {
-            name: "黄龙万科中心",
-            address: "杭州市西湖区"
+            name: "仰恩大学",
+            address: "福建省泉州市马甲镇仰恩大学"
+          },
+          {
+            name: "仰恩大学",
+            address: "福建省泉州市马甲镇仰恩大学旧区"
+          },
+          {
+            name: "仰恩大学",
+            address: "福建省泉州市马甲镇仰恩大学新区"
           }
         ];
       } else {

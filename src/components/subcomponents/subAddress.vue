@@ -8,17 +8,22 @@
       @edit="onEdit"
       @select="sel_address"
     />
+    <van-popup v-model="address_edit_pop_show" position="bottom" :style="{ height: '70%' }">
+      <subAddressEdit @son_getAddressEdit="getAddressEdit"></subAddressEdit>
+    </van-popup>
   </div>
 </template>
 
 <script>
+// 导入地址编辑子组件
+import subAddressEdit from "@/components/subcomponents/subAddressEdit";
 export default {
   data() {
     return {
       // 默认地址选择
       chosenAddressId: "0",
       add_button_text: " ",
-      // 地址；列表
+      // 地址列表
       address_list: [
         {
           id: "1",
@@ -34,10 +39,12 @@ export default {
         }
       ],
       // 选择的地址数据
-      sel_address_data: {}
+      sel_address_data: {},
+      address_edit_pop_show: false
     };
   },
   mounted() {
+    // 改变add按钮文字
     this.changeButtonText();
   },
   methods: {
@@ -55,18 +62,35 @@ export default {
     },
     onAdd() {
       if (this.user_id == undefined) {
-        // 向父组件传值
+        // 向父组件-goodsBuy物品购买页传递选择的地址数据
         this.$emit("son_getAddress", this.sel_address_data);
       } else {
         // 地址管理页，添加地址
-        console.log(this.user_id);
+        // console.log(this.user_id);
+        this.address_edit_pop_show = true;
       }
     },
     // 编辑地址点击事件
     onEdit(item, index) {
       console.log("编辑地址:" + index);
+    },
+    // 获取子组件添加的地址数据
+    getAddressEdit(obj) {
+      if (obj.name != "") {
+        this.address_edit_pop_show = false;
+        this.address_list.push({
+          id: this.address_list.length,
+          name: obj.name,
+          tel: obj.tel,
+          address: obj.addressDetail
+        });
+      }
     }
   },
+  components: {
+    subAddressEdit
+  },
+  // 地址管理页传递的用户id
   props: ["user_id"]
 };
 </script>

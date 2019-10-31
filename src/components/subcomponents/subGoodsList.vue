@@ -11,7 +11,9 @@
       :key="item.id"
       @click.native="goDetail(item.goodId)"
     >
+    <!-- 标记 -->
       <div slot="tags"></div>
+      <!-- 发布人头像和名字 -->
       <div class="card-bottom" slot="bottom">
         <van-image round width="2rem" height="2rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
         <span>{{item.seller_name}}</span>
@@ -77,7 +79,6 @@ export default {
         .then(function(response) {
           let res = response.data;
           if (res.status == "0") {
-            console.log("goodsList_succss");
             that.goodsList = res.result.list;
             console.log(that.goodsList);
           } else {
@@ -95,7 +96,6 @@ export default {
         .then(function(response) {
           let res = response.data;
           if (res.status == "0") {
-            console.log("succss");
             that.goodsList = [];
             that.goodsList = res.result;
             console.log(that.goodsList);
