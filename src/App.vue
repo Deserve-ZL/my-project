@@ -7,7 +7,6 @@
         <van-icon class="search_icon" name="search" size="1.7em" @click="search" />
       </div>
     </van-nav-bar>
-
     <!-- 中间的 路由 router-view 区域 -->
     <transition>
       <router-view class="app-center"></router-view>

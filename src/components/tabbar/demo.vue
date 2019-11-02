@@ -1,55 +1,133 @@
 <template>
-  <div class="user">
-    <div class="user-poster">
-      <img class="bgimg" src="/static/user_bgimg.png" />
-      <div class="name_content">
-        <van-image width="90" height="90" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
-        <div class="name">二手交易APP</div>
-      </div>
+  <div class="myinfo">
+    <div class="login" v-if="login_show">
+      <van-image class="login_img" width="100" height="100" src="/static/login.png" />
+      <van-cell-group :border="false">
+        <van-field label=" " right-icon="1" placeholder=" " left-icon="1" disabled />
+        <van-field
+          v-model="userName"
+          label-width="20%"
+          label="账号"
+          right-icon="question-o"
+          placeholder="请输入学号"
+          @click-right-icon="$toast('默认账号为学号')"
+          left-icon="contact"
+        />
+        <van-field
+          v-model="userPwd"
+          type="password"
+          label-width="20%"
+          label="密码"
+          placeholder="请输入密码"
+          left-icon="contact"
+        />
+        <van-button
+          class="login_btn"
+          @click="btnLogin"
+          color="linear-gradient(to right, #4bb0ff, #6149f6)"
+        >登录</van-button>
+      </van-cell-group>
     </div>
-    <div>
-      <van-row class="user-links">
-        <van-col span="6">
-          <van-icon name="pending-payment" />发布
-        </van-col>
-        <van-col span="6">
-          <van-icon name="records" />购买
-        </van-col>
-        <van-col span="6">
-          <van-icon name="tosend" />信息
-        </van-col>
-        <van-col span="6">
-          <van-icon name="logistics" />收藏
-        </van-col>
-      </van-row>
+    <div class="user" v-if="myinfo_show">
+      <div class="user-poster">
+        <img class="bgimg" src="/static/user_bgimg.png" />
+        <div class="name_content">
+          <van-image width="90" height="90" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+          <div class="name">二手交易APP</div>
+        </div>
+      </div>
 
-      <van-cell-group class="user-group">
-        <van-cell icon="records" title="全部订单" is-link />
-      </van-cell-group>
+      <div>
+        <van-row class="user-links">
+          <van-col span="6">
+            <van-icon name="pending-payment" />发布
+          </van-col>
+          <van-col span="6">
+            <van-icon name="records" />购买
+          </van-col>
+          <van-col span="6">
+            <van-icon name="tosend" />信息
+          </van-col>
+          <van-col span="6">
+            <van-icon name="logistics" />收藏
+          </van-col>
+        </van-row>
 
-      <van-cell-group>
-        <van-cell icon="points" title="我的积分" is-link />
-        <van-cell icon="gold-coin-o" title="我的优惠券" is-link />
-        <van-cell icon="gift-o" title="地址管理" is-link to="/mineinfo/address" />
-      </van-cell-group>
+        <van-cell-group class="user-group">
+          <van-cell icon="records" title="全部订单" is-link />
+        </van-cell-group>
+
+        <van-cell-group>
+          <van-cell icon="points" title="我的积分" is-link />
+          <van-cell icon="gold-coin-o" title="地址管理" is-link to="/mineinfo/address" />
+          <van-cell icon="close" title="退出登录" @click="loginOut" is-link />
+        </van-cell-group>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Row, Col, Icon, Cell, CellGroup } from "vant";
 export default {
-  components: {
-    [Row.name]: Row,
-    [Col.name]: Col,
-    [Icon.name]: Icon,
-    [Cell.name]: Cell,
-    [CellGroup.name]: CellGroup
+  data() {
+    return {
+      login_show: true,
+      myinfo_show: false,
+      userName: "",
+      userPwd: ""
+    };
+  },
+
+  methods: {
+    btnLogin() {
+      if (this.userName === "" && this.userPwd === "") {
+        this.$toast.fail("请输入账号和密码");
+      } else {
+        let that = this;
+        that.$axios
+          .post("/users/login", {
+            userName: that.userName,
+            userPwd: that.userPwd
+          })
+          .then(function(res) {
+            console.log(res);
+            if (res.data.status === "0") {
+              that.login_show = false;
+              that.myinfo_show = true;
+              that.userName = that.userPwd = "";
+              console.log("登录成功" + res.data.status);
+            } else {
+              console.log("登录失败" + res.data.status);
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
+    loginOut() {
+      this.login_show = true;
+      this.myinfo_show = false;
+      console.log("退出登录");
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.myinfo {
+  .login {
+    margin-top: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .login_btn {
+      margin: 5px;
+      width: 100%;
+    }
+  }
+}
 .user {
   &-poster {
     position: relative;

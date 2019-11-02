@@ -8,7 +8,9 @@
       @edit="onEdit"
       @select="sel_address"
     />
+    <!-- 地址编辑添加弹出层 -->
     <van-popup v-model="address_edit_pop_show" position="bottom" :style="{ height: '70%' }">
+      <!-- 地址编辑子组件  子->父传值，获取子组件（地址编辑）添加的地址数据-->
       <subAddressEdit @son_getAddressEdit="getAddressEdit"></subAddressEdit>
     </van-popup>
   </div>
@@ -46,9 +48,29 @@ export default {
   mounted() {
     // 改变add按钮文字
     this.changeButtonText();
+    // 根据user_id请求地址列表
+    this.getAddressList();
   },
   methods: {
-    // 改变add按钮文字
+    // 根据user_id请求用户地址列表
+    getAddressList() {
+      let that = this;
+      that.$axios
+        .get("/users/address?id=" + 123)
+        .then(function(response) {
+          let res = response.data;
+          if (res.status == "0") {
+            that.address_list = res.result.list;
+            console.log(that.address_list);
+          } else {
+            console.log("error");
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 根据user_id改变add按钮文字
     changeButtonText() {
       if (this.user_id == undefined) {
         this.add_button_text = "确定";

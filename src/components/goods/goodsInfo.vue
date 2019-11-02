@@ -89,6 +89,22 @@ export default {
     },
     // 收藏
     star() {
+      let that = this;
+      that.$axios
+        .post("/users/addstar", {
+          userId: "123",
+          goodId: that.id,
+          date: Date()
+        })
+        .then((res)=> {
+          if (res.data.status === "0") {
+            console.log("收藏成功" + res.data.status);
+          }
+        })
+        .catch((error)=> {
+          console.log(error);
+        });
+      // 交互
       this.starColor = !this.starColor;
       if (this.starColor === true) {
         this.$toast({
