@@ -1,5 +1,6 @@
 <template>
   <div class="myinfo">
+    <!-- 登录页面 -->
     <div class="login" v-if="login_show">
       <van-image class="login_img" width="100" height="100" src="/static/login.png" />
       <van-cell-group :border="false">
@@ -28,6 +29,7 @@
         >登录</van-button>
       </van-cell-group>
     </div>
+    <!-- 登录成功显示用户信息页面 -->
     <div class="user" v-if="myinfo_show">
       <div class="user-poster">
         <img class="bgimg" src="/static/user_bgimg.png" />
@@ -79,33 +81,44 @@ export default {
   },
 
   methods: {
+    // 登录按钮事件
     btnLogin() {
-      if (this.userName === "" && this.userPwd === "") {
+      if (this.userName === "" || this.userPwd === "") {
         this.$toast.fail("请输入账号和密码");
       } else {
+        // 登录请求
         let that = this;
         that.$axios
           .post("/users/login", {
             userName: that.userName,
             userPwd: that.userPwd
           })
-          .then(function(res) {
+          .then(res => {
             console.log(res);
             if (res.data.status === "0") {
+              // 登录成功清除登录页面，显示用户信息页
               that.login_show = false;
               that.myinfo_show = true;
               that.userName = that.userPwd = "";
               console.log("登录成功" + res.data.status);
             } else {
               console.log("登录失败" + res.data.status);
+              that.$toast.fail("账号或密码错误");
             }
           })
-          .catch(function(error) {
+          .catch(error => {
             console.log(error);
           });
       }
     },
+    // 退出登录事件
     loginOut() {
+      let that = this;
+      that.$axios.post("/users/logout").then(res => {
+        if (res.data.status == "0") {
+        }
+      });
+
       this.login_show = true;
       this.myinfo_show = false;
       console.log("退出登录");

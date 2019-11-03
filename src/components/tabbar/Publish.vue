@@ -148,15 +148,18 @@ export default {
             tag: that.tagChecked ? "全新" : ""
           })
           .then(function(res) {
+            if (res.data.status === "0") {
+              that.$notify({ type: "success", message: "发布成功" });
+              that.title = this.content = "";
+              that.tagChecked = false;
+            } else {
+              that.$notify({ type: "warning", message: "用户未登录" });
+            }
             console.log(res);
           })
           .catch(function(error) {
             console.log(error);
           });
-
-        this.$notify({ type: "success", message: "发布成功" });
-        this.title = this.content = "";
-        this.tagChecked = false;
       } else {
         this.$notify({ type: "warning", message: "请完善物品信息！" });
       }

@@ -51,7 +51,9 @@ export default {
   },
   methods: {
     // 提交事件
-    onSubmit() {},
+    onSubmit() {
+      console.log("提交订单")
+    },
     // 获取子组件的选择的地址数据
     getAddress(obj){
       console.log(obj);
