@@ -11,7 +11,7 @@
       :key="item.id"
       @click.native="goDetail(item.goodId)"
     >
-    <!-- 标记 -->
+      <!-- 标记 -->
       <div slot="tags"></div>
       <!-- 发布人头像和名字 -->
       <div class="card-bottom" slot="bottom">
@@ -69,9 +69,13 @@ export default {
       this.getGoodOneInfo(this.goods_id);
     }
   },
+  beforeUpdate() {
+    
+  },
   methods: {
+    // 获取物品列表
     getGoodsList(id) {
-      console.log(this.sort_id);
+      // console.log(this.sort_id);
       // goodsList
       let that = this;
       that.$axios
@@ -80,7 +84,7 @@ export default {
           let res = response.data;
           if (res.status === "0") {
             that.goodsList = res.result.list;
-            console.log(that.goodsList);
+            // console.log(that.goodsList);
           } else {
             console.log("goodsList_error");
           }
@@ -89,6 +93,7 @@ export default {
           console.log(error);
         });
     },
+    // 获取购买的物品信息
     getGoodOneInfo(id) {
       let that = this;
       that.$axios
@@ -98,7 +103,8 @@ export default {
           if (res.status == "0") {
             that.goodsList = [];
             that.goodsList = res.result;
-            console.log(that.goodsList);
+            // 向父组件提交物品价格
+            that.$emit("getPirate", res.result.list.new_price);
           } else {
             console.log("error");
           }

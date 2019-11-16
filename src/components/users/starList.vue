@@ -26,7 +26,7 @@ export default {
     getStarList(userid) {
       let that = this;
       that.$axios
-        .get("/users/starlist/" + userid)
+        .get("/users/star/list?id=" + userid)
         .then(response => {
           let res = response.data;
           if (res.status === "0") {

@@ -51,19 +51,19 @@ export default {
     // 改变add按钮文字
     this.changeButtonText();
     // 根据user_id请求地址列表
-    this.getAddressList();
+    this.getAddressList(this.user_id);
   },
   methods: {
     // 根据user_id请求用户地址列表
-    getAddressList() {
+    getAddressList(userid) {
       let that = this;
       that.$axios
-        .get("/users/address?id=" + that.user_id)
+        .get("/users/address/list?id=" + userid)
         .then(function(response) {
           let res = response.data;
           if (res.status === "0") {
             that.address_list = res.result.list;
-            console.log(that.address_list);
+            // console.log(that.address_list);
           } else {
             console.log("获取用户地址列表失败");
           }
@@ -102,13 +102,6 @@ export default {
     // 获取子组件-subAddressEdit添加的地址数据
     getAddressEdit(obj) {
       if (obj.name != "") {
-        // this.address_edit_pop_show = false;
-        // this.address_list.push({
-        //   id: this.address_list.length + 1,
-        //   name: obj.name,
-        //   tel: obj.tel,
-        //   address: obj.addressDetail
-        // });
         this.addAddress(obj);
         // 根据user_id请求地址列表
         this.getAddressList();
@@ -119,7 +112,7 @@ export default {
     addAddress(obj) {
       let that = this;
       that.$axios
-        .post("/users/pushaddress", {
+        .post("/users/address/add", {
           userId: that.user_id,
           id: that.address_list.length + 1,
           name: obj.name,
@@ -127,7 +120,7 @@ export default {
           address: obj.addressDetail
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.status === "0") {
             console.log("添加地址成功" + res.data.status);
           } else {
@@ -142,7 +135,8 @@ export default {
   components: {
     subAddressEdit
   },
-  // 地址管理页传递的用户id
+  // user_id  用户id
+  //component_tag 组件标记
   props: ["user_id", "component_tag"]
 };
 </script>

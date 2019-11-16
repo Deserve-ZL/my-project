@@ -133,7 +133,7 @@ export default {
       });
     },
     // 收藏点击事件
-    toStartList(){
+    toStartList() {
       this.$router.push({ name: "starList" });
     }
   }

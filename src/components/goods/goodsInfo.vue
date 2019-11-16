@@ -91,7 +91,7 @@ export default {
     star() {
       let that = this;
       that.$axios
-        .post("/users/addstar", {
+        .post("/users/star/add", {
           userId: "123",
           goodId: that.id,
           date: Date()

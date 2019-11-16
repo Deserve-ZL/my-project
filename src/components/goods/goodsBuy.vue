@@ -2,7 +2,7 @@
   <div>
     <!-- 物品信息 -->
     <div>
-      <goodBuyInfo :goods_id="id"></goodBuyInfo>
+      <goodBuyInfo @getPirate="getPirate" :goods_id="id"></goodBuyInfo>
     </div>
 
     <!-- 交易方式选择 -->
@@ -69,6 +69,9 @@ export default {
         this.address_pop_show = false;
         this.address_show = true;
       }
+    },
+    getPirate(num) {
+      this.buyPrice = parseInt(num) * 100 ;
     }
   },
   //注册子组件，物品详情

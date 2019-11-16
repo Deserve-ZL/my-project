@@ -1,8 +1,14 @@
 <template>
   <div>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <!-- <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <van-cell v-for="item in list" :key="item" :title="item" />
-    </van-list>
+    </van-list>-->
+    <van-steps :active="active" active-icon="success" active-color="#38f" inactive-icon="arrow">
+      <van-step>提交订单</van-step>
+      <van-step>卖家接受</van-step>
+      <van-step>买家提货</van-step>
+      <van-step>交易完成</van-step>
+    </van-steps>
   </div>
 </template>
 <script>
@@ -11,7 +17,8 @@ export default {
     return {
       list: [],
       loading: false,
-      finished: false
+      finished: false,
+      active: 0
     };
   },
 
@@ -32,5 +39,5 @@ export default {
       }, 500);
     }
   }
-}
+};
 </script>

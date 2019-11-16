@@ -127,7 +127,7 @@ export default {
     // 保存地址
     onSave(content) {
       // 向父组件-subAddress公共地址列表传递添加的地址信息
-      console.log(content);
+      // console.log(content);
       this.$emit("son_getAddressEdit", content);
     },
     // 删除地址
