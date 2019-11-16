@@ -14,6 +14,8 @@ import goodsBuy from '@/components/goods/goodsBuy'
 
 // 地址管理
 import addressManage from '@/components/users/addressManage'
+// 收藏列表
+import starList from '@/components/users/starList'
 
 Vue.use(Router)
 
@@ -29,5 +31,6 @@ export default new Router({
     { path: '/home/goodsBuy/:id', name: 'goodsBuy', component: goodsBuy },
 
     { path: '/mineinfo/address', name: 'addressManage', component: addressManage },
+    { path: '/mineinfo/starList', name: 'starList', component: starList },
   ]
 })

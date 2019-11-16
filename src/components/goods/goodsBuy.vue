@@ -17,18 +17,24 @@
         <!-- 选择地址按钮 -->
         <van-cell title="选择地址" v-show="opt_address_show" clickable @click="address_pop_show=true"></van-cell>
         <!-- 显示地址 -->
-        <van-cell v-show="address_show" :title="opt_address.name+'-'+opt_address.tel" :value="opt_address.address" label="" />
+        <van-cell
+          v-show="address_show"
+          :title="opt_address.name+'-'+opt_address.tel"
+          :value="opt_address.address"
+          label
+        />
       </van-cell-group>
     </van-radio-group>
     <!-- 提交订单 -->
     <van-submit-bar label="价格：" :price="buyPrice" button-text="提交" @submit="onSubmit" />
     <!-- 地址选择弹出层 -->
     <van-popup v-model="address_pop_show" position="bottom" :style="{ height: '50%' }">
-      <subAddress @son_getAddress="getAddress"></subAddress>
+      <subAddress :user_id="1" :component_tag="'buy'" @son_getAddress="getAddress"></subAddress>
     </van-popup>
   </div>
 </template>
 <script>
+// 导入物品列表和地址组件
 import subgoodslist from "@/components/subcomponents/subGoodsList";
 import subAddress from "@/components/subcomponents/subAddress";
 export default {
@@ -44,24 +50,24 @@ export default {
       // 地址选择弹出层显示
       address_pop_show: false,
       // 选择地址按钮显示
-      opt_address_show:false,
+      opt_address_show: false,
       // 选择的地址数据
-      opt_address:{}
+      opt_address: {}
     };
   },
   methods: {
     // 提交事件
     onSubmit() {
-      console.log("提交订单")
+      console.log("提交订单");
     },
     // 获取子组件的选择的地址数据
-    getAddress(obj){
+    getAddress(obj) {
       console.log(obj);
       console.log(obj.name);
-      this.opt_address=obj;
-      if(obj.id!=""){
-          this.address_pop_show=false;
-          this.address_show=true;
+      this.opt_address = obj;
+      if (obj.id != "") {
+        this.address_pop_show = false;
+        this.address_show = true;
       }
     }
   },

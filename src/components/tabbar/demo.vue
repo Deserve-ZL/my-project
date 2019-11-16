@@ -30,7 +30,7 @@
       </van-cell-group>
     </div>
     <!-- 登录成功显示用户信息页面 -->
-    <div class="user" v-if="myinfo_show">
+    <div class="user" v-else>
       <div class="user-poster">
         <img class="bgimg" src="/static/user_bgimg.png" />
         <div class="name_content">
@@ -50,7 +50,7 @@
           <van-col span="6">
             <van-icon name="tosend" />信息
           </van-col>
-          <van-col span="6">
+          <van-col span="6" @click="toStartList">
             <van-icon name="logistics" />收藏
           </van-col>
         </van-row>
@@ -74,12 +74,13 @@ export default {
   data() {
     return {
       login_show: true,
-      myinfo_show: false,
       userName: "",
       userPwd: ""
     };
   },
-
+  mounted() {
+    this.checkLogin();
+  },
   methods: {
     // 登录按钮事件
     btnLogin() {
@@ -98,7 +99,6 @@ export default {
             if (res.data.status === "0") {
               // 登录成功清除登录页面，显示用户信息页
               that.login_show = false;
-              that.myinfo_show = true;
               that.userName = that.userPwd = "";
               console.log("登录成功" + res.data.status);
             } else {
@@ -111,17 +111,30 @@ export default {
           });
       }
     },
+    // 检查登录状态
+    checkLogin() {
+      let that = this;
+      that.$axios.get("/users/checkLogin").then(res => {
+        if (res.data.status === "0") {
+          that.login_show = false;
+          console.log("用户已登录");
+        }
+      });
+    },
+
     // 退出登录事件
     loginOut() {
       let that = this;
       that.$axios.post("/users/logout").then(res => {
-        if (res.data.status == "0") {
+        if (res.data.status === "0") {
+          that.login_show = true;
+          console.log("退出登录");
         }
       });
-
-      this.login_show = true;
-      this.myinfo_show = false;
-      console.log("退出登录");
+    },
+    // 收藏点击事件
+    toStartList(){
+      this.$router.push({ name: "starList" });
     }
   }
 };

@@ -24,6 +24,7 @@ export default {
     return {
       // 默认地址选择
       chosenAddressId: "0",
+      // 地址操作按钮
       add_button_text: " ",
       // 地址列表
       address_list: [
@@ -42,6 +43,7 @@ export default {
       ],
       // 选择的地址数据
       sel_address_data: {},
+      // 地址编辑弹出层
       address_edit_pop_show: false
     };
   },
@@ -56,14 +58,14 @@ export default {
     getAddressList() {
       let that = this;
       that.$axios
-        .get("/users/address?id=" + 123)
+        .get("/users/address?id=" + that.user_id)
         .then(function(response) {
           let res = response.data;
-          if (res.status == "0") {
+          if (res.status === "0") {
             that.address_list = res.result.list;
             console.log(that.address_list);
           } else {
-            console.log("error");
+            console.log("获取用户地址列表失败");
           }
         })
         .catch(function(error) {
@@ -72,7 +74,7 @@ export default {
     },
     // 根据user_id改变add按钮文字
     changeButtonText() {
-      if (this.user_id == undefined) {
+      if (this.component_tag === "buy") {
         this.add_button_text = "确定";
       } else {
         this.add_button_text = "添加地址";
@@ -82,8 +84,9 @@ export default {
     sel_address(item, index) {
       this.sel_address_data = item;
     },
+    // 添加地址
     onAdd() {
-      if (this.user_id == undefined) {
+      if (this.component_tag === "buy") {
         // 向父组件-goodsBuy物品购买页传递选择的地址数据
         this.$emit("son_getAddress", this.sel_address_data);
       } else {
@@ -96,24 +99,51 @@ export default {
     onEdit(item, index) {
       console.log("编辑地址:" + index);
     },
-    // 获取子组件添加的地址数据
+    // 获取子组件-subAddressEdit添加的地址数据
     getAddressEdit(obj) {
       if (obj.name != "") {
+        // this.address_edit_pop_show = false;
+        // this.address_list.push({
+        //   id: this.address_list.length + 1,
+        //   name: obj.name,
+        //   tel: obj.tel,
+        //   address: obj.addressDetail
+        // });
+        this.addAddress(obj);
+        // 根据user_id请求地址列表
+        this.getAddressList();
         this.address_edit_pop_show = false;
-        this.address_list.push({
-          id: this.address_list.length,
+      }
+    },
+    // 根据user_id,添加地址POST方法
+    addAddress(obj) {
+      let that = this;
+      that.$axios
+        .post("/users/pushaddress", {
+          userId: that.user_id,
+          id: that.address_list.length + 1,
           name: obj.name,
           tel: obj.tel,
           address: obj.addressDetail
+        })
+        .then(res => {
+          console.log(res);
+          if (res.data.status === "0") {
+            console.log("添加地址成功" + res.data.status);
+          } else {
+            console.log("添加地址失败" + res.data.status);
+          }
+        })
+        .catch(error => {
+          console.log(error);
         });
-      }
     }
   },
   components: {
     subAddressEdit
   },
   // 地址管理页传递的用户id
-  props: ["user_id"]
+  props: ["user_id", "component_tag"]
 };
 </script>
 

@@ -78,7 +78,7 @@ export default {
         .get("/goods/list/" + id)
         .then(function(response) {
           let res = response.data;
-          if (res.status == "0") {
+          if (res.status === "0") {
             that.goodsList = res.result.list;
             console.log(that.goodsList);
           } else {

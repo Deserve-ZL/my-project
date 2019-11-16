@@ -96,12 +96,12 @@ export default {
           goodId: that.id,
           date: Date()
         })
-        .then((res)=> {
+        .then(res => {
           if (res.data.status === "0") {
             console.log("收藏成功" + res.data.status);
           }
         })
-        .catch((error)=> {
+        .catch(error => {
           console.log(error);
         });
       // 交互
