@@ -20,11 +20,15 @@ Vue.filter("formatDate", function (time) {
   let date = new Date(time);
   return dateFormat.formatDate(date, "yyyy-MM-dd hh:mm");
 })
+// 导入Vuex
+import store from './store/store';
+
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

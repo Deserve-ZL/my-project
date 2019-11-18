@@ -35,7 +35,7 @@
         <img class="bgimg" src="/static/user_bgimg.png" />
         <div class="name_content">
           <van-image width="90" height="90" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
-          <div class="name">二手交易APP</div>
+          <div class="name">{{this.$store.state.user_name}}</div>
         </div>
       </div>
 
@@ -95,11 +95,14 @@ export default {
             userPwd: that.userPwd
           })
           .then(res => {
-            console.log(res);
+            console.log(res.data.result.userName);
             if (res.data.status === "0") {
               // 登录成功清除登录页面，显示用户信息页
               that.login_show = false;
               that.userName = that.userPwd = "";
+              // 把用户名和用户id放入vuex
+              that.$store.commit('getUserName', res.data.result.user_name);
+              that.$store.commit('getUserId', res.data.result.user_id);
               console.log("登录成功" + res.data.status);
             } else {
               console.log("登录失败" + res.data.status);

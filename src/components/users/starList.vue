@@ -7,10 +7,12 @@
   </div>
 </template>
 <script>
+// 导入公共物品列表
 import subGoodList from "@/components/subcomponents/subGoodsList";
 export default {
   data() {
     return {
+      user_id:this.$store.state.user_id,
       goods_id_list: [
         {
           goodId: "87",
@@ -20,9 +22,10 @@ export default {
     };
   },
   mounted() {
-    this.getStarList("123");
+    this.getStarList(this.user_id);
   },
   methods: {
+    // 获取用户收藏物品列表
     getStarList(userid) {
       let that = this;
       that.$axios
@@ -31,9 +34,9 @@ export default {
           let res = response.data;
           if (res.status === "0") {
             that.goods_id_list = res.result.list;
-            console.log(that.goods_id_list);
+            // console.log(that.goods_id_list);
           } else {
-            console.log("goods_id_list_error");
+            console.log("获取收藏物品列表失败");
           }
         })
         .catch(error => {

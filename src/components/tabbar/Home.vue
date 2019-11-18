@@ -7,7 +7,7 @@
       left-icon="volume-o"
       mode="closeable"
       :scrollable="true"
-    >通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容</van-notice-bar>
+    >您好！{{this.$store.state.user_name}} 欢迎使用二手交易APP！请自觉遵守二手交易规则。</van-notice-bar>
 
     <!-- Swipe 轮播图 -->
     <van-swipe class="swipe" :autoplay="3000">

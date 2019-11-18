@@ -88,7 +88,7 @@
 </template>
 
 <script>
-// 文件上传
+// 文件上传子组件
 import uploader from "@/components/subcomponents/Uploader";
 
 export default {
@@ -109,7 +109,9 @@ export default {
       old_price: "",
       price: "开个价",
       // 是否全新
-      tagChecked: false
+      tagChecked: false,
+      // 发布物品随机码id
+      pushGoodId: Math.floor(Math.random() * 1000 + 1).toString()
     };
   },
   methods: {
@@ -123,7 +125,7 @@ export default {
     getPrice() {
       this.price_show = true;
       this.NumKey1 = true;
-      console.log(this.price);
+      // console.log(this.price);
     },
     // 发布点击事件,添加物品请求
     pubish() {
@@ -134,35 +136,58 @@ export default {
         this.new_price != "" &&
         this.old_price != ""
       ) {
-        let that = this;
-        that.$axios
-          .post("/goods/add", {
-            goodId: Math.floor(Math.random() * 100 + 1).toString(),
-            goodSort: that.sort,
-            title: that.title,
-            content: that.content,
-            new_price: that.new_price,
-            old_price: that.old_price,
-            img_url: "https://img.yzcdn.cn/vant/leaf.jpg",
-            seller_name: "123",
-            tag: that.tagChecked ? "全新" : ""
-          })
-          .then(function(res) {
-            if (res.data.status === "0") {
-              that.$notify({ type: "success", message: "发布成功" });
-              that.title = this.content = "";
-              that.tagChecked = false;
-            } else {
-              that.$notify({ type: "warning", message: "用户未登录" });
-            }
-            console.log(res);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        addToGood();
       } else {
         this.$notify({ type: "warning", message: "请完善物品信息！" });
       }
+    },
+    addToGood() {
+      let that = this;
+      that.$axios
+        .post("/goods/add", {
+          goodId: that.pushGoodId,
+          goodSort: that.sort,
+          title: that.title,
+          content: that.content,
+          new_price: that.new_price,
+          old_price: that.old_price,
+          img_url: "https://img.yzcdn.cn/vant/leaf.jpg",
+          seller_name: that.$store.state.user_name,
+          tag: that.tagChecked ? "全新" : ""
+        })
+        .then(res => {
+          if (res.data.status === "0") {
+            that.$notify({ type: "success", message: "发布成功" });
+            that.title = this.content = "";
+            that.tagChecked = false;
+            // 发布成功，执行用户添加发布物品信息
+            // addToUser();
+          } else {
+            that.$notify({ type: "warning", message: "用户未登录" });
+          }
+          // console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    addToUser() {
+      let that = this;
+      that.$axios
+        .post("/users/good/push", {
+          userId: that.$store.state.user_id,
+          goodId: that.pushGoodId,
+          date: Date()
+        })
+        .then(res => {
+          if (res.data.status === "0") {
+          } else {
+          }
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   //注册子组件，文经上传

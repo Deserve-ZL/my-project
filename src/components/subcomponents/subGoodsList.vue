@@ -69,9 +69,7 @@ export default {
       this.getGoodOneInfo(this.goods_id);
     }
   },
-  beforeUpdate() {
-    
-  },
+  beforeUpdate() {},
   methods: {
     // 获取物品列表
     getGoodsList(id) {
@@ -103,8 +101,12 @@ export default {
           if (res.status == "0") {
             that.goodsList = [];
             that.goodsList = res.result;
-            // 向父组件提交物品价格
-            that.$emit("getPirate", res.result.list.new_price);
+            // 向父组件goodBuy传递物品价格
+            let goodInfo = {
+              price: res.result.list.new_price,
+              name: res.result.list.seller_name
+            };
+            that.$emit("getGoodInfo", goodInfo);
           } else {
             console.log("error");
           }

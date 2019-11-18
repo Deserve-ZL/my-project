@@ -9,7 +9,7 @@
           height="2.6rem"
           src="https://img.yzcdn.cn/vant/cat.jpeg"
         />
-        <span class="name">不知道叫什么名字好</span>
+        <span class="name">{{goodInfo.seller_name}}</span>
         <van-tag mark type="primary">信用极好</van-tag>
       </div>
       <van-divider />
@@ -73,7 +73,7 @@ export default {
     };
   },
   mounted() {
-    this.getGoodInfo();
+    this.getGoodInfo(this.id);
   },
   methods: {
     // 点赞
@@ -92,7 +92,7 @@ export default {
       let that = this;
       that.$axios
         .post("/users/star/add", {
-          userId: "123",
+          userId: that.$store.state.user_id,
           goodId: that.id,
           date: Date()
         })
@@ -115,11 +115,11 @@ export default {
       }
     },
     // 根据物品goodId请求物品数据
-    getGoodInfo() {
+    getGoodInfo(goodId) {
       let that = this;
       that.$axios
-        .get("/goods/goodinfo?id=" + that.id)
-        .then(function(response) {
+        .get("/goods/goodinfo?id=" + goodId)
+        .then(response => {
           let res = response.data;
           if (res.status == "0") {
             console.log("goodinfo_succss");
@@ -128,7 +128,7 @@ export default {
             console.log("goodinfo_error");
           }
         })
-        .catch(function(error) {
+        .catch(error => {
           console.log(error);
         });
     },

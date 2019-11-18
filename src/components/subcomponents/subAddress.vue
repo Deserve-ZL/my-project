@@ -44,7 +44,8 @@ export default {
       // 选择的地址数据
       sel_address_data: {},
       // 地址编辑弹出层
-      address_edit_pop_show: false
+      address_edit_pop_show: false,
+      user_id:this.$store.state.user_id
     };
   },
   mounted() {
@@ -72,7 +73,7 @@ export default {
           console.log(error);
         });
     },
-    // 根据user_id改变add按钮文字
+    // 根据component_tag改变add按钮文字
     changeButtonText() {
       if (this.component_tag === "buy") {
         this.add_button_text = "确定";
@@ -104,7 +105,7 @@ export default {
       if (obj.name != "") {
         this.addAddress(obj);
         // 根据user_id请求地址列表
-        this.getAddressList();
+        this.getAddressList(this.user_id);
         this.address_edit_pop_show = false;
       }
     },
@@ -135,9 +136,8 @@ export default {
   components: {
     subAddressEdit
   },
-  // user_id  用户id
   //component_tag 组件标记
-  props: ["user_id", "component_tag"]
+  props: ["component_tag"]
 };
 </script>
 

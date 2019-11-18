@@ -33,6 +33,17 @@ export default {
       nav_title: "二手市场"
     };
   },
+  mounted() {
+    // app主页面加载完成获取cookie存入vuex
+    this.$store.commit(
+      "getUserName",
+      document.cookie.split(";")[0].split("=")[1]
+    );
+    this.$store.commit(
+      "getUserId",
+      document.cookie.split(";")[1].split("=")[1]
+    );
+  },
   methods: {
     // 返回
     goBack() {

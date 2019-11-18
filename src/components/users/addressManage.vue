@@ -1,6 +1,6 @@
 <template>
   <div>
-    <subAddress :user_id="1" :component_tag="'user'"></subAddress>
+    <subAddress :component_tag="'user'"></subAddress>
   </div>
 </template>
 <script>

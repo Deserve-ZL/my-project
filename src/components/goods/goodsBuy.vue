@@ -2,7 +2,7 @@
   <div>
     <!-- 物品信息 -->
     <div>
-      <goodBuyInfo @getPirate="getPirate" :goods_id="id"></goodBuyInfo>
+      <goodBuyInfo @getGoodInfo="getGoodInfo" :goods_id="id"></goodBuyInfo>
     </div>
 
     <!-- 交易方式选择 -->
@@ -52,13 +52,35 @@ export default {
       // 选择地址按钮显示
       opt_address_show: false,
       // 选择的地址数据
-      opt_address: {}
+      opt_address: {},
+      seller_name: ""
     };
   },
   methods: {
     // 提交事件
     onSubmit() {
       console.log("提交订单");
+
+      let that = this;
+      that.$axios
+        .post("/users/order/add", {
+          orderId: "AA"+new Date().getTime(),
+          goodId: that.id,
+          buyerName: that.$store.state.user_name,
+          sellerName: that.seller_name,
+          active: "0",
+          address: that.opt_address,
+          date: Date()
+        })
+        .then(res => {
+          if (res.data.status === "0") {
+          } else {
+          }
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     // 获取子组件的选择的地址数据
     getAddress(obj) {
@@ -70,8 +92,10 @@ export default {
         this.address_show = true;
       }
     },
-    getPirate(num) {
-      this.buyPrice = parseInt(num) * 100 ;
+    // 获子组件传递的物品信息
+    getGoodInfo(obj) {
+      this.buyPrice = parseInt(obj.price) * 100;
+      this.seller_name = obj.name;
     }
   },
   //注册子组件，物品详情
