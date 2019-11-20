@@ -34,7 +34,7 @@ export default {
           let res = response.data;
           if (res.status === "0") {
             that.goods_id_list = res.result.list;
-            // console.log(that.goods_id_list);
+            console.log(that.goods_id_list[0].date);
           } else {
             console.log("获取收藏物品列表失败");
           }

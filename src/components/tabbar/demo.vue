@@ -131,6 +131,8 @@ export default {
       that.$axios.post("/users/logout").then(res => {
         if (res.data.status === "0") {
           that.login_show = true;
+          that.$store.commit('getUserName', "");
+          that.$store.commit('getUserId', "");
           console.log("退出登录");
         }
       });

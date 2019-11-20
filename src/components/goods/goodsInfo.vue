@@ -121,7 +121,7 @@ export default {
         .get("/goods/goodinfo?id=" + goodId)
         .then(response => {
           let res = response.data;
-          if (res.status == "0") {
+          if (res.status === "0") {
             console.log("goodinfo_succss");
             that.goodInfo = res.result.list;
           } else {

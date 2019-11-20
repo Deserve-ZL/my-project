@@ -59,28 +59,40 @@ export default {
   methods: {
     // 提交事件
     onSubmit() {
+      console.log(this.opt_address.id);
       console.log("提交订单");
-
-      let that = this;
-      that.$axios
-        .post("/users/order/add", {
-          orderId: "AA"+new Date().getTime(),
-          goodId: that.id,
-          buyerName: that.$store.state.user_name,
-          sellerName: that.seller_name,
-          active: "0",
-          address: that.opt_address,
-          date: Date()
-        })
-        .then(res => {
-          if (res.data.status === "0") {
-          } else {
-          }
-          console.log(res);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      if (this.buyRadio === "") {
+        this.$notify({ type: "warning", message: "请选择交易方式" });
+      } else if (
+        this.buyRadio === "网上交易" &&
+        this.opt_address.id === undefined
+      ) {
+        this.$notify({ type: "warning", message: "请选择地址" });
+      } else {
+        let that = this;
+        that.$axios
+          .post("/users/order/add", {
+            orderId: "AA" + new Date().getTime(),
+            goodId: that.id,
+            buyerName: that.$store.state.user_name,
+            sellerName: that.seller_name,
+            active: "0",
+            buyWay:that.buyRadio,
+            address: that.opt_address,
+            date: Date()
+          })
+          .then(res => {
+            if (res.data.status === "0") {
+              that.$router.push({ name: 'order'})
+            } else {
+              that.$notify({ type: "warning", message: "用户未登录" });
+            }
+            console.log(res);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
     // 获取子组件的选择的地址数据
     getAddress(obj) {

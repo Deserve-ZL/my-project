@@ -136,7 +136,7 @@ export default {
         this.new_price != "" &&
         this.old_price != ""
       ) {
-        addToGood();
+        this.addToGood();
       } else {
         this.$notify({ type: "warning", message: "请完善物品信息！" });
       }
@@ -171,24 +171,24 @@ export default {
           console.log(error);
         });
     },
-    addToUser() {
-      let that = this;
-      that.$axios
-        .post("/users/good/push", {
-          userId: that.$store.state.user_id,
-          goodId: that.pushGoodId,
-          date: Date()
-        })
-        .then(res => {
-          if (res.data.status === "0") {
-          } else {
-          }
-          console.log(res);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
+    // addToUser() {
+    //   let that = this;
+    //   that.$axios
+    //     .post("/users/good/push", {
+    //       userId: that.$store.state.user_id,
+    //       goodId: that.pushGoodId,
+    //       date: Date()
+    //     })
+    //     .then(res => {
+    //       if (res.data.status === "0") {
+    //       } else {
+    //       }
+    //       console.log(res);
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // }
   },
   //注册子组件，文经上传
   components: {
