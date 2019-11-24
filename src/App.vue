@@ -1,21 +1,21 @@
 <template>
   <div id="app">
     <!-- 导航栏 -->
-    <van-nav-bar :title="nav_title" left-text="返回" @click-left="goBack" left-arrow fixed>
+    <van-nav-bar :title="nav_title" left-text="返回" @click-left="goBack" left-arrow>
       <!-- <div class="search" slot="right">
         <van-field v-model="search_value" v-show="in_show" placeholder="搜索" />
         <van-icon class="search_icon" name="search" size="1.7em" @click="search" />
       </div> -->
     </van-nav-bar>
-    <!-- 中间的 路由 router-view 区域 -->
+    <!-- 中间的 路由 router-view 区域 --> 
+    <router-view class="app-center"></router-view>
     <transition>
-      <router-view class="app-center"></router-view>
     </transition>
     <!-- 底部标签栏 -->
-    <van-tabbar route>
+    <van-tabbar route :z-index="2">
       <van-tabbar-item replace to="/home" icon="home-o">首页</van-tabbar-item>
       <van-tabbar-item replace to="/publish" icon="plus">发布</van-tabbar-item>
-      <van-tabbar-item replace to="/order" icon="chat-o" info="5">消息</van-tabbar-item>
+      <van-tabbar-item replace to="/order" icon="chat-o" :info="this.$store.state.orderList_len">订单</van-tabbar-item>
       <van-tabbar-item replace to="/mineinfo" icon="contact">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -66,7 +66,7 @@ export default {
 
 <style lang="scss" scoped>
 #app {
-  margin-top: 47px;
+  // margin-top: 47px;
   margin-bottom: 60px;
   // overflow-x: hidden;
   // .search {

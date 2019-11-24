@@ -5,7 +5,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     user_name: "",
-    user_id: ""
+    user_id: "",
+    orderList_len:""
   },
   mutations: {
     getUserName(state, n) {
@@ -13,6 +14,9 @@ const store = new Vuex.Store({
     },
     getUserId(state, n) {
       state.user_id = n;
+    },
+    getOrderList_len(state,n){
+      state.orderList_len = n;
     }
   }
 })

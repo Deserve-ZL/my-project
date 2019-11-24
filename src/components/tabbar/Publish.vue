@@ -125,7 +125,6 @@ export default {
     getPrice() {
       this.price_show = true;
       this.NumKey1 = true;
-      // console.log(this.price);
     },
     // 发布点击事件,添加物品请求
     pubish() {

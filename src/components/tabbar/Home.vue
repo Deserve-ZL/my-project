@@ -20,6 +20,7 @@
     <van-tabs v-model="active" sticky animated swipeable>
       <!-- Card 卡片 物品列表-->
       <van-tab title="全部">
+        <!-- 物品列表子组件 -->
         <subgoodslist :sort_id="1"></subgoodslist>
       </van-tab>
       <van-tab title="服装">
@@ -39,12 +40,13 @@
 </template>
 
 <script>
-// 物品列表
+// 导入物品列表子组件
 import subgoodslist from "@/components/subcomponents/subGoodsList";
 
 export default {
   data() {
     return {
+      // tag标签
       active: 0,
       // 轮播图片
       images: [

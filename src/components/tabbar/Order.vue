@@ -26,7 +26,9 @@ export default {
           let res = response.data;
           if (res.status === "0") {
             this.orderList = res.result.list;
-            console.log(this.orderList.orderId);
+            this.$store.commit("getOrderList_len",this.orderList.length.toString())
+            console.log(this.orderList.length)
+            // console.log(this.orderList.orderId);
             console.log("orderList_success");
           } else {
             console.log("orderList_error");
