@@ -77,13 +77,14 @@ export default {
             buyerName: that.$store.state.user_name,
             sellerName: that.seller_name,
             active: "0",
-            buyWay:that.buyRadio,
+            buyWay: that.buyRadio,
             address: that.opt_address,
             date: Date()
           })
           .then(res => {
             if (res.data.status === "0") {
-              that.$router.push({ name: 'order'})
+              that.$notify({ type: "success", message: "用户未登录" });
+              that.$router.push({ name: "Order", params: {} });
             } else {
               that.$notify({ type: "warning", message: "用户未登录" });
             }
