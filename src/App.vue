@@ -5,11 +5,11 @@
       <!-- <div class="search" slot="right">
         <van-field v-model="search_value" v-show="in_show" placeholder="搜索" />
         <van-icon class="search_icon" name="search" size="1.7em" @click="search" />
-      </div> -->
+      </div>-->
     </van-nav-bar>
-    <!-- 中间的 路由 router-view 区域 --> 
-    <router-view class="app-center"></router-view>
+    <!-- 中间的 路由 router-view 区域 -->
     <transition>
+      <router-view class="app-center"></router-view>
     </transition>
     <!-- 底部标签栏 -->
     <van-tabbar route :z-index="2">
@@ -35,7 +35,7 @@ export default {
   },
   mounted() {
     // app主页面加载完成获取cookie存入vuex
-    if (document.cookie==="") {
+    if (document.cookie === "") {
       this.$notify({ type: "warning", message: "用户未登录" });
     } else {
       this.$store.commit(
@@ -52,7 +52,7 @@ export default {
     // 返回
     goBack() {
       this.$router.go(-1);
-    },
+    }
     // 搜索
     // search() {
     //   this.in_show = !this.in_show;
@@ -78,19 +78,30 @@ export default {
 }
 // 添加页面切换动画
 .v-enter {
-  opacity: 0;
+  // display: none;
+  // opacity: 0;
   transform: translateX(100%);
+}
+.v-enter-to {
+  display: none;
+  // transform: translateY(-50%);
+}
+.v-leave {
+  // display: none;
+  // opacity: 0.5;
+  // transform: translateX(-50%);
 }
 
 .v-leave-to {
-  opacity: 0;
+  // display: none;
+  // opacity: 1;
+  // position: absolute;
   transform: translateX(-100%);
-  position: absolute;
 }
 
 .v-enter-active,
 .v-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.4s ease;
 }
 </style>>
 

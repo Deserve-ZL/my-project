@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="push">
     <!-- 物品标题描述 -->
     <van-cell-group :border="false">
       <van-field
@@ -53,6 +53,7 @@
         @click="NumKey1=true,NumKey2=false"
         @blur="price=new_price"
         @input="price=new_price"
+        :style="{readonly:'readonly'}"
       />
       <van-field
         label="定价"
@@ -70,7 +71,7 @@
         theme="custom"
         extra-key="."
         close-button-text="完成"
-        @close="price_show =NumKey1= false,price=new_price"
+        @close="price_show =NumKey1= false,price=new_price===''?'开个价':new_price"
         :transition="false"
       />
       <van-number-keyboard
@@ -80,7 +81,7 @@
         theme="custom"
         extra-key="."
         close-button-text="完成"
-        @close="price_show =NumKey2= false,price=new_price"
+        @close="price_show =NumKey2= false,price=new_price===''?'开个价':new_price"
         :transition="false"
       />
     </van-popup>
@@ -196,6 +197,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.push{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
 .tagCheckbox {
   margin: 0.7rem;
   display: flex;

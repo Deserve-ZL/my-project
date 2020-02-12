@@ -1,36 +1,7 @@
 <template>
   <div class="myinfo">
-    <!-- 登录页面 -->
-    <div class="login" v-if="login_show">
-      <van-image class="login_img" width="100" height="100" src="/static/login.png" />
-      <van-cell-group :border="false">
-        <van-field label=" " right-icon="1" placeholder=" " left-icon="1" disabled />
-        <van-field
-          v-model="userName"
-          label-width="20%"
-          label="账号"
-          right-icon="question-o"
-          placeholder="请输入学号"
-          @click-right-icon="$toast('默认账号为学号')"
-          left-icon="contact"
-        />
-        <van-field
-          v-model="userPwd"
-          type="password"
-          label-width="20%"
-          label="密码"
-          placeholder="请输入密码"
-          left-icon="contact"
-        />
-        <van-button
-          class="login_btn"
-          @click="btnLogin"
-          color="linear-gradient(to right, #4bb0ff, #6149f6)"
-        >登录</van-button>
-      </van-cell-group>
-    </div>
     <!-- 登录成功显示用户信息页面 -->
-    <div class="user" v-else>
+    <div class="user" v-if="!login_show">
       <div class="user-poster">
         <img class="bgimg" src="/static/user_bgimg.png" />
         <div class="name_content">
@@ -60,11 +31,40 @@
         </van-cell-group>
 
         <van-cell-group>
-          <van-cell icon="points" title="我的积分" is-link />
-          <van-cell icon="gold-coin-o" title="地址管理" is-link to="/mineinfo/address" />
+          <van-cell icon="points" title="地址管理" is-link to="/mineinfo/address" />
+          <van-cell icon="gold-coin-o" title="修改密码" is-link to="/mineinfo/changepwd" />
           <van-cell icon="close" title="退出登录" @click="loginOut" is-link />
         </van-cell-group>
       </div>
+    </div>
+    <!-- 登录页面 -->
+    <div class="login" v-else>
+      <van-image class="login_img" width="100" height="100" src="/static/login.png" />
+      <van-cell-group :border="false">
+        <van-field label=" " right-icon="1" placeholder=" " left-icon="1" disabled />
+        <van-field
+          v-model="userName"
+          label-width="20%"
+          label="账号"
+          right-icon="question-o"
+          placeholder="请输入学号"
+          @click-right-icon="$toast('默认账号为学号')"
+          left-icon="contact"
+        />
+        <van-field
+          v-model="userPwd"
+          type="password"
+          label-width="20%"
+          label="密码"
+          placeholder="请输入密码"
+          left-icon="contact"
+        />
+        <van-button
+          class="login_btn"
+          @click="btnLogin"
+          color="linear-gradient(to right, #4bb0ff, #6149f6)"
+        >登录</van-button>
+      </van-cell-group>
     </div>
   </div>
 </template>
@@ -78,7 +78,7 @@ export default {
       userPwd: ""
     };
   },
-  mounted() {
+  created() {
     this.checkLogin();
   },
   methods: {
@@ -102,8 +102,8 @@ export default {
               that.login_show = false;
               that.userName = that.userPwd = "";
               // 把用户名和用户id放入vuex
-              that.$store.commit('getUserName', res.data.result.user_name);
-              that.$store.commit('getUserId', res.data.result.user_id);
+              that.$store.commit("getUserName", res.data.result.user_name);
+              that.$store.commit("getUserId", res.data.result.user_id);
               console.log("登录成功" + res.data.status);
             } else {
               console.log("登录失败" + res.data.status);
@@ -133,8 +133,8 @@ export default {
       that.$axios.post("/users/logout").then(res => {
         if (res.data.status === "0") {
           that.login_show = true;
-          that.$store.commit('getUserName', "");
-          that.$store.commit('getUserId', "");
+          that.$store.commit("getUserName", "");
+          that.$store.commit("getUserId", "");
           this.$notify({ type: "success", message: "退出登录！" });
         }
       });

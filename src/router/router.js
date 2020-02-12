@@ -15,6 +15,8 @@ import goodsBuy from '@/components/goods/goodsBuy'
 import addressManage from '@/components/users/addressManage'
 // 收藏列表
 import starList from '@/components/users/starList'
+// 修改密码
+import changePwd from '@/components/users/changePwd'
 
 Vue.use(Router)
 
@@ -31,5 +33,6 @@ export default new Router({
 
     { path: '/mineinfo/address', name: 'addressManage', component: addressManage },
     { path: '/mineinfo/starList', name: 'starList', component: starList },
+    { path: '/mineinfo/changepwd', name: 'changePwd', component: changePwd }
   ]
 })
