@@ -102,9 +102,9 @@ export default {
         this.address_edit_pop_show = true;
       }
     },
-    // 编辑地址点击事件（已改为删除按钮事件）
+    // （已改为删除按钮事件）编辑地址点击事件
     onEdit(item, index) {
-      // console.log("编辑地址:" + index);
+      // console.log(item.id);
       // 确认模态框
       Dialog.confirm({
         title: "删除地址",
@@ -115,7 +115,7 @@ export default {
           this.$axios
             .post("/users/address/del", {
               userId: this.user_id,
-              addressId: index + 1
+              addressId: item.id
             })
             .then(res => {
               if (res.data.status === "0") {
