@@ -35,8 +35,8 @@ export default {
           click: 0,
           img_url:
             "http://demo.dtcms.net/upload/201504/20/thumb_201504200046589514.jpg",
-          new_price: 2195,
-          old_price: 2499,
+          new_price: "2195.00",
+          old_price: "2499.00",
           stock_quantity: 60,
           seller_name: "一个名字而已",
           tag: "全新"
@@ -132,5 +132,8 @@ export default {
   span {
     margin-left: 0.5rem;
   }
+}
+.van-card__price {
+  color: #FF0000;
 }
 </style>

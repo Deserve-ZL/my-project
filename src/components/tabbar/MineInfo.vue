@@ -12,25 +12,24 @@
 
       <div>
         <van-row class="user-links">
-          <van-col span="6">
+          <van-col span="8">
             <van-icon name="pending-payment" />发布
           </van-col>
-          <van-col span="6">
+          <van-col span="8">
             <van-icon name="records" />购买
           </van-col>
-          <van-col span="6">
-            <van-icon name="tosend" />信息
-          </van-col>
-          <van-col span="6" @click="toStartList">
+
+          <van-col span="8" @click="toStartList">
             <van-icon name="logistics" />收藏
           </van-col>
         </van-row>
 
         <van-cell-group class="user-group">
-          <van-cell icon="records" title="全部订单" is-link />
+          
         </van-cell-group>
 
         <van-cell-group>
+          <!-- <van-cell icon="records" title="全部订单" is-link /> -->
           <van-cell icon="points" title="地址管理" is-link to="/mineinfo/address" />
           <van-cell icon="gold-coin-o" title="修改密码" is-link to="/mineinfo/changepwd" />
           <van-cell icon="close" title="退出登录" @click="loginOut" is-link />
@@ -70,6 +69,8 @@
 </template>
 
 <script>
+// 函数导入模态框
+import { Dialog } from "vant";
 export default {
   data() {
     return {
@@ -96,7 +97,7 @@ export default {
             userPwd: that.userPwd
           })
           .then(res => {
-            console.log(res.data.result.userName);
+            // console.log(res.data.result.userName);
             if (res.data.status === "0") {
               // 登录成功清除登录页面，显示用户信息页
               that.login_show = false;
@@ -129,15 +130,25 @@ export default {
 
     // 退出登录事件
     loginOut() {
-      let that = this;
-      that.$axios.post("/users/logout").then(res => {
-        if (res.data.status === "0") {
-          that.login_show = true;
-          that.$store.commit("getUserName", "");
-          that.$store.commit("getUserId", "");
-          this.$notify({ type: "success", message: "退出登录！" });
-        }
-      });
+      // 提示确定模态框
+      Dialog.confirm({
+        title: "退出登录",
+        message: "请确定退出登录"
+      })
+        .then(() => {
+          let that = this;
+          that.$axios.post("/users/logout").then(res => {
+            if (res.data.status === "0") {
+              that.login_show = true;
+              that.$store.commit("getUserName", "");
+              that.$store.commit("getUserId", "");
+              this.$notify({ type: "success", message: "退出登录！" });
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
     },
     // 收藏点击事件
     toStartList() {

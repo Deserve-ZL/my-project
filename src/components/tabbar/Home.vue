@@ -74,5 +74,8 @@ export default {
     height: 180px;
   }
 }
+.van-card__price {
+  color: #FF0000;
+}
 </style>
 

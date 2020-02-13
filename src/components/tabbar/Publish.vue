@@ -149,8 +149,8 @@ export default {
           goodSort: that.sort,
           title: that.title,
           content: that.content,
-          new_price: that.new_price,
-          old_price: that.old_price,
+          new_price: that.returnFloat(that.new_price),
+          old_price: that.returnFloat(that.old_price),
           img_url: "https://img.yzcdn.cn/vant/leaf.jpg",
           seller_name: that.$store.state.user_name,
           tag: that.tagChecked ? "全新" : ""
@@ -171,6 +171,21 @@ export default {
           console.log(error);
         });
     },
+    // 对输入的价格操作函数-数字保留两位小数不足2位自动补零
+    returnFloat(value) {
+      var value = Math.round(parseFloat(value) * 100) / 100;
+      var xsd = value.toString().split(".");
+      if (xsd.length == 1) {
+        value = value.toString() + ".00";
+        return value;
+      }
+      if (xsd.length > 1) {
+        if (xsd[1].length < 2) {
+          value = value.toString() + "0";
+        }
+        return value;
+      }
+    }
     // addToUser() {
     //   let that = this;
     //   that.$axios
@@ -197,7 +212,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.push{
+.push {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }

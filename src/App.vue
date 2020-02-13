@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <!-- 导航栏 -->
-    <van-nav-bar :title="nav_title" left-text="返回" @click-left="goBack" left-arrow>
+    <van-nav-bar
+      :title="nav_title"
+      :left-text="left_text"
+      @click-left="goBack"
+      :left-arrow="left_arrow_show"
+    >
       <!-- <div class="search" slot="right">
         <van-field v-model="search_value" v-show="in_show" placeholder="搜索" />
         <van-icon class="search_icon" name="search" size="1.7em" @click="search" />
@@ -30,7 +35,9 @@ export default {
       search_value: "",
       in_show: false,
       icon_show: true,
-      nav_title: "二手市场"
+      nav_title: "二手市场",
+      left_arrow_show: false,
+      left_text: ""
     };
   },
   mounted() {
@@ -59,6 +66,18 @@ export default {
     //   // this.in_show=!this.in_show;
     //   this.nav_title = "";
     // }
+  },
+  // 监听路由地址是否为home主页
+  watch: {
+    "$route.path": function(newVal) {
+      if (newVal == "/home") {
+        this.left_arrow_show = false;
+        this.left_text = "";
+      } else {
+        this.left_arrow_show = true;
+        this.left_text = "返回";
+      }
+    }
   },
   components: {}
 };

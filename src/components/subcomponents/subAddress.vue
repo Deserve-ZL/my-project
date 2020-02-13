@@ -19,6 +19,8 @@
 <script>
 // 导入地址编辑子组件
 import subAddressEdit from "@/components/subcomponents/subAddressEdit";
+// 函数导入模态框
+import { Dialog } from "vant";
 export default {
   data() {
     return {
@@ -45,7 +47,7 @@ export default {
       sel_address_data: {},
       // 地址编辑弹出层
       address_edit_pop_show: false,
-      user_id:this.$store.state.user_id
+      user_id: this.$store.state.user_id
     };
   },
   mounted() {
@@ -53,6 +55,10 @@ export default {
     this.changeButtonText();
     // 根据user_id请求地址列表
     this.getAddressList(this.user_id);
+  },
+  beforeUpdate() {
+    // 修改vant地址列表默认图标
+    this.changeIcon();
   },
   methods: {
     // 根据user_id请求用户地址列表
@@ -96,9 +102,37 @@ export default {
         this.address_edit_pop_show = true;
       }
     },
-    // 编辑地址点击事件
+    // 编辑地址点击事件（已改为删除按钮事件）
     onEdit(item, index) {
-      console.log("编辑地址:" + index);
+      // console.log("编辑地址:" + index);
+      // 确认模态框
+      Dialog.confirm({
+        title: "删除地址",
+        message: "请确定删除地址"
+      })
+        .then(() => {
+          this.address_list.splice(index, 1);
+          this.$axios
+            .post("/users/address/del", {
+              userId: this.user_id,
+              addressId: index + 1
+            })
+            .then(res => {
+              if (res.data.status === "0") {
+                this.$notify({ type: "success", message: "删除成功" });
+                console.log("删除地址成功" + res.data.status);
+              } else {
+                this.$notify({ type: "success", message: "删除失败" });
+                console.log("删除地址失败" + res.data.status);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        })
+        .catch(() => {
+          // on cancel
+        });
     },
     // 获取子组件-subAddressEdit添加的地址数据
     getAddressEdit(obj) {
@@ -106,6 +140,7 @@ export default {
         this.addAddress(obj);
         // 根据user_id请求地址列表
         this.getAddressList(this.user_id);
+        this.changeIcon();
         this.address_edit_pop_show = false;
       }
     },
@@ -131,6 +166,19 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    // 修改vant地址列表默认图标
+    changeIcon() {
+      this.$nextTick(() => {
+        let IconClass = document.getElementsByClassName(
+          "van-address-item__edit"
+        );
+        // console.log(IconClass);
+        // console.log(IconClass.length);
+        for (let i = 0; i < IconClass.length ; i++) {
+          IconClass[i].classList.replace("van-icon-edit", "van-icon-delete");
+        }
+      });
     }
   },
   components: {
