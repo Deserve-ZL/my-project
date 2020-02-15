@@ -7,7 +7,7 @@
           fit="fill"
           width="2.6rem"
           height="2.6rem"
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          :src="goodInfo.seller_img"
         />
         <span class="name">{{goodInfo.seller_name}}</span>
         <van-tag mark type="primary">信用极好</van-tag>

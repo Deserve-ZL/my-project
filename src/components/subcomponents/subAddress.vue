@@ -176,7 +176,8 @@ export default {
         // console.log(IconClass);
         // console.log(IconClass.length);
         for (let i = 0; i < IconClass.length ; i++) {
-          IconClass[i].classList.replace("van-icon-edit", "van-icon-delete");
+          IconClass[i].classList.remove("van-icon-edit");
+          IconClass[i].classList.add("van-icon-delete");
         }
       });
     }

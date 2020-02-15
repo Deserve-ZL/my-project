@@ -12,14 +12,14 @@
 
       <div>
         <van-row class="user-links">
-          <van-col span="8">
+          <van-col span="12">
             <van-icon name="pending-payment" />发布
           </van-col>
-          <van-col span="8">
+          <!-- <van-col span="8">
             <van-icon name="records" />购买
-          </van-col>
+          </van-col> -->
 
-          <van-col span="8" @click="toStartList">
+          <van-col span="12" @click="toStartList">
             <van-icon name="logistics" />收藏
           </van-col>
         </van-row>

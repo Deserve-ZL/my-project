@@ -15,7 +15,7 @@
       <div slot="tags"></div>
       <!-- 发布人头像和名字 -->
       <div class="card-bottom" slot="bottom">
-        <van-image round width="2rem" height="2rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <van-image round width="2rem" height="2rem" :src="item.seller_img" />
         <span>{{item.seller_name}}</span>
       </div>
     </van-card>
