@@ -71,6 +71,8 @@ export default {
         .post("/users/order/active", {
           orderId: this.orderList.orderId,
           userId: this.$store.state.user_id,
+          buyerName:this.orderList.buyerName,
+          sellerName:this.orderList.sellerName,
           active: this.order_state.toString(),
           date: Date()
         })

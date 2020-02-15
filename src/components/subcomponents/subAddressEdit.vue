@@ -2,7 +2,6 @@
   <div>
     <van-address-edit
       :area-list="areaList"
-      show-delete
       show-search-result
       :search-result="searchResult"
       @save="onSave"

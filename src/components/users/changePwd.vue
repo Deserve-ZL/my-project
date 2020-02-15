@@ -47,6 +47,7 @@
 export default {
   data() {
     return {
+      user_id: this.$store.state.user_id,
       oldPwd: "",
       newPwd: "",
       sameNewPwd: "",
@@ -56,17 +57,26 @@ export default {
     };
   },
   methods: {
+    // 提交修改
     commit() {
       if (this.oldPwd != "" && this.newPwd != "" && this.sameNewPwd != "") {
         if (this.newPwd === this.sameNewPwd) {
-          this.$notify({ type: "success", message: "修改密码成功" });
+          let pwdInfo = {
+            userId: this.user_id,
+            oldPwd: this.oldPwd,
+            newPwd: this.newPwd
+          };
+          this.changePwd(pwdInfo);
+          this.oldPwd = this.newPwd = this.sameNewPwd = "";
         } else {
           this.$notify({ type: "warning", message: "请重新输入确认密码！" });
+          this.sameNewPwd = ""
         }
       } else {
         this.$notify({ type: "warning", message: "请输入密码！" });
       }
     },
+    // 显示隐藏密码
     showPwd() {
       if (this.inputType === "password") {
         this.inputType = "text";
@@ -75,6 +85,26 @@ export default {
         this.inputType = "password";
         this.inputIcon = "eye-o";
       }
+    },
+    changePwd(pwdInfo) {
+      this.$axios
+        .post("/users/pwd/change", {
+          pwdInfo
+        })
+        .then(res => {
+          if (res.data.status === "0" && res.data.result != null) {
+            this.$notify({ type: "success", message: "修改密码成功" });
+          } else {
+            this.$notify({
+              type: "danger",
+              message: "原密码错误！修改密码失败"
+            });
+          }
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
@@ -83,8 +113,8 @@ export default {
 .changePwd {
   // display: flex;
   margin: 1.5rem;
-  .btn{
-    padding-top:2rem; 
+  .btn {
+    padding-top: 2rem;
   }
 }
 </style>

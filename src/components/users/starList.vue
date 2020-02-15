@@ -4,7 +4,7 @@
       <subGoodList :goods_id="item.goodId"></subGoodList>
       <van-row class="star_do">
         <van-col class="star_text" span="18" offset="1">
-          <span>{{item.date | formatDate}}</span>
+          <span class="date_text">{{item.date | formatDate}}</span>
           <!-- <van-cell title=" " :value="item.date | formatDate" /> -->
         </van-col>
         <van-col span="5">
@@ -92,10 +92,16 @@ export default {
 </script>
 <style lang="scss" scoped>
 .star_do {
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  background-color: #fafafa;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
   .star_text {
     font-size: 1.1rem;
+    .date_text {
+      font-size: 1rem;
+      font-weight: 300;
+    }
   }
 }
 </style>
