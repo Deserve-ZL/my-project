@@ -5,7 +5,7 @@
       :desc="item.content"
       :origin-price="item.old_price"
       :price="item.new_price"
-      :thumb="item.img_url"
+      :thumb="item.img_url[0].url"
       :tag="item.tag"
       v-for="item in goodsList"
       :key="item.id"

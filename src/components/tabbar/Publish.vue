@@ -22,7 +22,7 @@
       />
     </van-cell-group>
     <!-- Uploader 文件图片上传 子组件-->
-    <uploader></uploader>
+    <uploader @func="getFileList"></uploader>
     <!-- Divider 分割线 -->
     <van-divider />
     <!-- 分类 价格 Cell 单元格 -->
@@ -31,7 +31,6 @@
       <van-cell title="价格" :value="price" icon="gold-coin-o" is-link center @click="getPrice" />
     </van-cell-group>
     <van-divider />
-
     <!-- Button 发布按钮 -->
     <van-button
       round
@@ -39,7 +38,6 @@
       color="linear-gradient(to right, #4bb0ff, #6149f6)"
       @click="pubish"
     >发布</van-button>
-
     <!-- 分类选择弹出层 -->
     <van-popup v-model="picker_show" position="bottom">
       <van-picker show-toolbar :columns="columns" @cancel="picker_show = false" @confirm="getSort" />
@@ -112,7 +110,10 @@ export default {
       // 是否全新
       tagChecked: false,
       // 发布物品随机码id
-      pushGoodId: Math.floor(Math.random() * 1000 + 1).toString()
+      pushGoodId: Math.floor(Math.random() * 1000 + 1).toString(),
+      // 上传图片文件数组
+      fileList: [],
+      img_url: []
     };
   },
   methods: {
@@ -127,6 +128,12 @@ export default {
       this.price_show = true;
       this.NumKey1 = true;
     },
+    // 获取文件上传子组件图片数组
+    getFileList(data) {
+      // fileList为[]才赋值
+      this.fileList = this.fileList ? data : [];
+      // console.log(this.fileList);
+    },
     // 发布点击事件,添加物品请求
     pubish() {
       if (
@@ -136,12 +143,34 @@ export default {
         this.new_price != "" &&
         this.old_price != ""
       ) {
-        this.addToGood();
+        this.uploadImg();
       } else {
         this.$notify({ type: "warning", message: "请完善物品信息！" });
       }
     },
-    addToGood() {
+    uploadImg() {
+      let formData = new FormData();
+      for (let i = 0; i < this.fileList.length; i++) {
+        formData.append("files", this.fileList[i]);
+      }
+      // console.log(formData.getAll("files"));
+      this.$axios
+        .post("/goods/upload", formData, {
+          "Content-Type": "multipart/form-data"
+        })
+        .then(res => {
+          if (res.data.status === "0") {
+            console.log("上传成功" + res.data.status);
+            // console.log(res.data.result);
+            this.addToGood(res.data.result);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    addToGood(url) {
       let that = this;
       that.$axios
         .post("/goods/add", {
@@ -151,8 +180,9 @@ export default {
           content: that.content,
           new_price: that.returnFloat(that.new_price),
           old_price: that.returnFloat(that.old_price),
-          img_url: "https://img.yzcdn.cn/vant/leaf.jpg",
+          img_url: url,
           seller_name: that.$store.state.user_name,
+          seller_img: "https://img.yzcdn.cn/vant/cat.jpeg",
           tag: that.tagChecked ? "全新" : ""
         })
         .then(res => {
