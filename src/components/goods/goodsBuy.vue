@@ -69,31 +69,89 @@ export default {
       ) {
         this.$notify({ type: "warning", message: "请选择地址" });
       } else {
-        let that = this;
-        that.$axios
-          .post("/users/order/add", {
-            orderId: "AA" + new Date().getTime(),
-            goodId: that.id,
-            buyerName: that.$store.state.user_name,
-            sellerName: that.seller_name,
-            active: "0",
-            buyWay: that.buyRadio,
-            address: that.opt_address,
-            date: Date()
-          })
-          .then(res => {
-            if (res.data.status === "0") {
-              that.$notify({ type: "success", message: "用户未登录" });
-              that.$router.push({ name: "Order", params: {} });
-            } else {
-              that.$notify({ type: "warning", message: "用户未登录" });
-            }
-            console.log(res);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        this.bugPost();
       }
+    },
+    // 物品购买请求
+    bugPost() {
+      this.$axios
+        .post("/users/order/add", {
+          orderId: "AA" + new Date().getTime(),
+          goodId: this.id,
+          buyerName: this.$store.state.user_name,
+          sellerName: this.seller_name,
+          active: "0",
+          buyWay: this.buyRadio,
+          address: this.opt_address,
+          date: Date()
+        })
+        .then(res => {
+          if (res.data.status === "0") {
+            this.$notify({ type: "success", message: "提交成功" });
+            this.delGood();
+            this.delPubLish();
+            this.delStarLish();
+            // 页面跳转
+            this.$router.push({ name: "Order", params: {} });
+          } else {
+            this.$notify({ type: "warning", message: "用户未登录" });
+          }
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 删除物品
+    delGood() {
+      this.$axios
+        .post("/goods/del", { goodId: this.id })
+        .then(res => {
+          if (res.data.status === "0") {
+            console.log("删除物品成功");
+          } else {
+            console.log("删除物品失败");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 删除发布物品
+    delPubLish() {
+      this.$axios
+        .post("/users/publish/del", {
+          userId: this.seller_name,
+          goodId: this.id
+        })
+        .then(res => {
+          if (res.data.status === "0") {
+            console.log("success-delPubLish");
+          } else {
+            console.log("error-delPubLish");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 删除收藏物品
+    delStarLish() {
+      this.$axios
+        .post("/users/star/del", {
+          userId: this.$store.state.user_name,
+          goodId: this.id
+        })
+        .then(res => {
+          if (res.data.status === "0") {
+            console.log("success-delStarLish");
+          } else {
+            console.log("error-delStarLish");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     // 获取子组件的选择的地址数据
     getAddress(obj) {

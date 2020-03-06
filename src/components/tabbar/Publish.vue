@@ -45,6 +45,7 @@
     <!-- 价格键盘输入弹出层 -->
     <van-popup v-model="price_show" position="bottom" round :style="{ height: '52%' }">
       <van-field
+        class="inprice"
         label="价格"
         placeholder="出售价格"
         :value="new_price"
@@ -52,12 +53,15 @@
         @blur="price=new_price"
         @input="price=new_price"
         :style="{readonly:'readonly'}"
+        readonly
       />
       <van-field
+        class="inprice"
         label="定价"
         placeholder="入手价格"
         :value="old_price"
         @click="NumKey2=true,NumKey1=false"
+        readonly
       />
       <!-- 是否全新复选框 -->
       <van-checkbox class="tagCheckbox" v-model="tagChecked" shape="square">全新</van-checkbox>
@@ -110,23 +114,38 @@ export default {
       // 是否全新
       tagChecked: false,
       // 发布物品随机码id
-      pushGoodId: Math.floor(Math.random() * 1000 + 1).toString(),
+      pushGoodId: Math.floor(Math.random() * 100000 + 1).toString(),
       // 上传图片文件数组
-      fileList: [],
-      img_url: []
+      fileList: []
     };
   },
   methods: {
+    // 分类弹出层显示
     sortShow() {
       this.picker_show = true;
     },
+    // 获取分类选择
     getSort(value) {
       this.sort = value;
       this.picker_show = false;
     },
+    // 获取价格
     getPrice() {
       this.price_show = true;
       this.NumKey1 = true;
+      // 取消手机键盘弹出
+      for (
+        let i = 0;
+        i < document.getElementsByClassName("inprice").length;
+        i++
+      ) {
+        document
+          .getElementsByClassName("inprice")
+          [i].getElementsByTagName("INPUT")
+          .focus(() => {
+            document.activeElement.blur();
+          });
+      }
     },
     // 获取文件上传子组件图片数组
     getFileList(data) {
@@ -137,17 +156,21 @@ export default {
     // 发布点击事件,添加物品请求
     pubish() {
       if (
-        this.title != "" &&
-        this.content != "" &&
-        this.sort != "分个类" &&
-        this.new_price != "" &&
-        this.old_price != ""
+        this.title === "" ||
+        this.content === "" ||
+        this.sort === "分个类" ||
+        this.new_price === "" ||
+        this.old_price === ""
       ) {
-        this.uploadImg();
-      } else {
         this.$notify({ type: "warning", message: "请完善物品信息！" });
+      } else if (this.fileList.length < 2) {
+        this.$notify({ type: "warning", message: "至少添加2张图片！" });
+      } else {
+        // 发送请求
+        this.uploadImg();
       }
     },
+    // 上传图片请求
     uploadImg() {
       let formData = new FormData();
       for (let i = 0; i < this.fileList.length; i++) {
@@ -160,8 +183,9 @@ export default {
         })
         .then(res => {
           if (res.data.status === "0") {
-            console.log("上传成功" + res.data.status);
+            console.log("上传图片成功" + res.data.status);
             // console.log(res.data.result);
+            // 上传物品信息请求
             this.addToGood(res.data.result);
           }
         })
@@ -169,7 +193,7 @@ export default {
           console.log(error);
         });
     },
-
+    // 上传物品信息请求
     addToGood(url) {
       let that = this;
       that.$axios
@@ -190,8 +214,8 @@ export default {
             that.$notify({ type: "success", message: "发布成功" });
             that.title = this.content = "";
             that.tagChecked = false;
-            // 发布成功，执行用户添加发布物品信息
-            // addToUser();
+            // 发布成功，添加到用户发布列表
+            this.addPublishList();
           } else {
             that.$notify({ type: "warning", message: "用户未登录" });
           }
@@ -215,25 +239,24 @@ export default {
         }
         return value;
       }
+    },
+    addPublishList() {
+      let that = this;
+      that.$axios
+        .post("/users/publish/add", {
+          userId: that.$store.state.user_id,
+          goodId: that.pushGoodId,
+          date: Date()
+        })
+        .then(res => {
+          if (res.data.status === "0") {
+            console.log("添加成功" + res.data.status);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
-    // addToUser() {
-    //   let that = this;
-    //   that.$axios
-    //     .post("/users/good/push", {
-    //       userId: that.$store.state.user_id,
-    //       goodId: that.pushGoodId,
-    //       date: Date()
-    //     })
-    //     .then(res => {
-    //       if (res.data.status === "0") {
-    //       } else {
-    //       }
-    //       console.log(res);
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    // }
   },
   //注册子组件，文经上传
   components: {

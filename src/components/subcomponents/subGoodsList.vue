@@ -81,8 +81,15 @@ export default {
         .then(function(response) {
           let res = response.data;
           if (res.status === "0") {
-            that.goodsList = res.result.list;
-            // console.log(that.goodsList);
+            let data = res.result.list;
+            if (that.page_order === "page_order") {
+              that.goodsList = data;
+            } else {
+              // 过滤以购买的物品
+              that.goodsList = data.filter(item => {
+                return item.goodId.indexOf("A") < 0;
+              });
+            }
           } else {
             console.log("goodsList_error");
           }
@@ -120,7 +127,7 @@ export default {
       this.$router.push({ name: "goodsInfo", params: { id } });
     }
   },
-  props: ["sort_id", "goods_id"]
+  props: ["sort_id", "goods_id", "page_order"]
 };
 </script>
 <style lang="scss" scoped>
@@ -134,6 +141,6 @@ export default {
   }
 }
 .van-card__price {
-  color: #FF0000;
+  color: #ff0000;
 }
 </style>

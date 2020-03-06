@@ -18,6 +18,7 @@ export default {
     };
   },
   methods: {
+    // 文件上传前检验
     asyncBeforeRead(file) {
       return new Promise((resolve, reject) => {
         if (file.type.indexOf("image/")) {
@@ -35,7 +36,6 @@ export default {
     // 文件上传完毕后会触发after-read回调函数，获取到对应的file对象
     afterRead(file) {
       // 将文件上传至服务器
-      
       // 提取fileList中的file
       const files = [];
       for (let i = 0; i < this.fileList.length; i++) {
@@ -43,8 +43,10 @@ export default {
       }
       // console.log(this.fileList[0].file);
       // console.log(files);
+      // 上传文件file数组提交父组件
       this.$emit("func",files);
 
+      // FormData上传
       // let formData = new FormData();
       // formData.append("file",file.file);
       // this.$axios
@@ -68,7 +70,7 @@ export default {
       //       ""
       //     )
       //   })
-
+      // 文件读取
       // this.$axios
       //   .get("/goods/loadimg")
       //   .then(res => {

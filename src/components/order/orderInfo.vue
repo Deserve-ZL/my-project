@@ -14,7 +14,7 @@
       <van-step>交易完成</van-step>
     </van-steps>
     <!-- 物品信息 -->
-    <subgoodslist :goods_id="orderList.goodId"></subgoodslist>
+    <subgoodslist :goods_id="orderList.goodId+'A'" :page_tag="page_order"></subgoodslist>
     <!-- 订单信息 -->
     <van-collapse v-model="activeNames">
       <van-collapse-item
@@ -52,7 +52,8 @@ export default {
       order_state: -1,
       order_state_text: ["接受交易", "确认物品", "交易完成", "交易已完成"],
       activeNames: ["0"],
-      btnDisplay: false
+      btnDisplay: false,
+      page_order:"page_order"
     };
   },
   mounted() {
@@ -71,8 +72,8 @@ export default {
         .post("/users/order/active", {
           orderId: this.orderList.orderId,
           userId: this.$store.state.user_id,
-          buyerName:this.orderList.buyerName,
-          sellerName:this.orderList.sellerName,
+          buyerName: this.orderList.buyerName,
+          sellerName: this.orderList.sellerName,
           active: this.order_state.toString(),
           date: Date()
         })
@@ -87,9 +88,7 @@ export default {
         });
     }
   },
-  components: {
-    subgoodslist
-  },
+
   watch: {
     // 订单状态操作用户判断
     order_state(neworder_state, oldorder_state) {
@@ -110,14 +109,17 @@ export default {
       }
     }
   },
-  props: ["orderList"]
+  props: ["orderList"],
+  components: {
+    subgoodslist
+  }
 };
 </script>
 <style lang="scss" scoped>
 .orderInfo {
-  .orderNum{
-   margin-left: 0.6rem;
-   padding-top: 1rem;
+  .orderNum {
+    margin-left: 0.6rem;
+    padding-top: 1rem;
   }
   .btnDo {
     margin: 0.5rem;

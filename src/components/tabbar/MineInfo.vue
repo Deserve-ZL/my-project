@@ -12,13 +12,9 @@
 
       <div>
         <van-row class="user-links">
-          <van-col span="12">
+          <van-col span="12" @click="toPublishList">
             <van-icon name="pending-payment" />发布
           </van-col>
-          <!-- <van-col span="8">
-            <van-icon name="records" />购买
-          </van-col> -->
-
           <van-col span="12" @click="toStartList">
             <van-icon name="logistics" />收藏
           </van-col>
@@ -153,6 +149,9 @@ export default {
     // 收藏点击事件
     toStartList() {
       this.$router.push({ name: "starList" });
+    },
+    toPublishList(){
+      this.$router.push({ name: "publishList" });
     }
   }
 };

@@ -9,7 +9,7 @@ import subAddGoodList from "../subcomponents/subAddGoodsList";
 export default {
   data() {
     return {
-      page_tap: "star"
+      page_tap: "publish"
     };
   },
   components: {

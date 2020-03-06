@@ -13,6 +13,8 @@ import goodsBuy from '@/components/goods/goodsBuy'
 
 // 地址管理
 import addressManage from '@/components/users/addressManage'
+// 发布列表
+import publishList from '@/components/users/publishList'
 // 收藏列表
 import starList from '@/components/users/starList'
 // 修改密码
@@ -27,11 +29,12 @@ export default new Router({
     { path: '/publish', name: 'Publish', component: Publish },
     { path: '/order', name: 'Order', component: Order },
     { path: '/mineinfo', name: 'MineInfo', component: MineInfo },
-    
+
     { path: '/home/goodsinfo/:id', name: 'goodsInfo', component: goodsInfo },
     { path: '/home/goodsBuy/:id', name: 'goodsBuy', component: goodsBuy },
 
     { path: '/mineinfo/address', name: 'addressManage', component: addressManage },
+    { path: '/mineinfo/publishList', name: "publishList", component: publishList },
     { path: '/mineinfo/starList', name: 'starList', component: starList },
     { path: '/mineinfo/changepwd', name: 'changePwd', component: changePwd }
   ]
