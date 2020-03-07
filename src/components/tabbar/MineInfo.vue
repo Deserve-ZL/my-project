@@ -1,7 +1,7 @@
 <template>
   <div class="myinfo">
     <!-- 登录成功显示用户信息页面 -->
-    <div class="user" v-if="!login_show">
+    <div class="user">
       <div class="user-poster">
         <img class="bgimg" src="/static/user_bgimg.png" />
         <div class="name_content">
@@ -20,9 +20,7 @@
           </van-col>
         </van-row>
 
-        <van-cell-group class="user-group">
-          
-        </van-cell-group>
+        <van-cell-group class="user-group"></van-cell-group>
 
         <van-cell-group>
           <!-- <van-cell icon="records" title="全部订单" is-link /> -->
@@ -32,35 +30,6 @@
         </van-cell-group>
       </div>
     </div>
-    <!-- 登录页面 -->
-    <div class="login" v-else>
-      <van-image class="login_img" width="100" height="100" src="/static/login.png" />
-      <van-cell-group :border="false">
-        <van-field label=" " right-icon="1" placeholder=" " left-icon="1" disabled />
-        <van-field
-          v-model="userName"
-          label-width="20%"
-          label="账号"
-          right-icon="question-o"
-          placeholder="请输入学号"
-          @click-right-icon="$toast('默认账号为学号')"
-          left-icon="contact"
-        />
-        <van-field
-          v-model="userPwd"
-          type="password"
-          label-width="20%"
-          label="密码"
-          placeholder="请输入密码"
-          left-icon="contact"
-        />
-        <van-button
-          class="login_btn"
-          @click="btnLogin"
-          color="linear-gradient(to right, #4bb0ff, #6149f6)"
-        >登录</van-button>
-      </van-cell-group>
-    </div>
   </div>
 </template>
 
@@ -69,56 +38,15 @@
 import { Dialog } from "vant";
 export default {
   data() {
-    return {
-      login_show: true,
-      userName: "",
-      userPwd: ""
-    };
+    return {};
   },
-  created() {
-    this.checkLogin();
-  },
+  created() {},
   methods: {
-    // 登录按钮事件
-    btnLogin() {
-      if (this.userName === "" || this.userPwd === "") {
-        // this.$toast.fail("请输入账号和密码");
-        this.$notify({ type: "warning", message: "请输入账号和密码！" });
-      } else {
-        // 登录请求
-        let that = this;
-        that.$axios
-          .post("/users/login", {
-            userName: that.userName,
-            userPwd: that.userPwd
-          })
-          .then(res => {
-            // console.log(res.data.result.userName);
-            if (res.data.status === "0") {
-              // 登录成功清除登录页面，显示用户信息页
-              that.login_show = false;
-              that.userName = that.userPwd = "";
-              // 把用户名和用户id放入vuex
-              that.$store.commit("getUserName", res.data.result.user_name);
-              that.$store.commit("getUserId", res.data.result.user_id);
-              console.log("登录成功" + res.data.status);
-            } else {
-              console.log("登录失败" + res.data.status);
-              this.$notify({ type: "warning", message: "账号或密码错误！" });
-              // that.$toast.fail("账号或密码错误");
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-    },
     // 检查登录状态
     checkLogin() {
       let that = this;
       that.$axios.get("/users/checkLogin").then(res => {
         if (res.data.status === "0") {
-          that.login_show = false;
           console.log("用户已登录");
         }
       });
@@ -135,10 +63,10 @@ export default {
           let that = this;
           that.$axios.post("/users/logout").then(res => {
             if (res.data.status === "0") {
-              that.login_show = true;
               that.$store.commit("getUserName", "");
               that.$store.commit("getUserId", "");
               this.$notify({ type: "success", message: "退出登录！" });
+              that.$router.push({ name: "login" });
             }
           });
         })
@@ -146,11 +74,12 @@ export default {
           // on cancel
         });
     },
-    // 收藏点击事件
+    // 收藏页面点击事件
     toStartList() {
       this.$router.push({ name: "starList" });
     },
-    toPublishList(){
+    // 发布页面点击事件
+    toPublishList() {
       this.$router.push({ name: "publishList" });
     }
   }
