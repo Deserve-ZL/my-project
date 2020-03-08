@@ -7,7 +7,8 @@
       left-icon="volume-o"
       mode="closeable"
       :scrollable="true"
-    >您好！{{this.$store.state.user_name}} 欢迎使用二手交易APP！请自觉遵守二手交易规则。</van-notice-bar>
+      :delay="0"
+    >您好！{{this.$store.state.user_name+this.notice_text}}</van-notice-bar>
 
     <!-- Swipe 轮播图 -->
     <van-swipe class="swipe" :autoplay="3000">
@@ -52,14 +53,28 @@ export default {
       images: [
         "https://img.yzcdn.cn/vant/apple-1.jpg",
         "https://img.yzcdn.cn/vant/apple-2.jpg"
-      ]
+      ],
+      notice_text: "欢迎使用二手交易APP！请自觉遵守二手交易规则。"
     };
+  },
+  created() {
+    this.getManages();
   },
   methods: {
     //商品详情页跳转-使用编程式路由跳转
     // goDetail(id) {
     //   this.$router.push({ name: "goodsInfo", params: { id } });
     // }
+    // 请求轮播图片和通知文字数据
+    getManages() {
+      this.$axios.get("/manages/index").then(res => {
+        let data = res.data.result.list;
+        if (data.count != 0) {
+          this.images = data.swipe;
+          this.notice_text = data.notice;
+        }
+      });
+    }
   },
   //注册子组件，物品列表
   components: {
@@ -75,7 +90,7 @@ export default {
   }
 }
 .van-card__price {
-  color: #FF0000;
+  color: #ff0000;
 }
 </style>
 
